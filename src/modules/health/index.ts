@@ -1,22 +1,21 @@
-import { Elysia, t } from 'elysia'
+import { Elysia } from 'elysia'
+import { z } from 'zod'
 
 export const health = new Elysia().get(
   '/',
-  ({ params, user }) => ({
+  () => ({
     message: 'Safe Zone API',
     version: '1.0.0',
     documentation: '/swagger',
     health: '/health',
-    user: user?.name,
   }),
   {
-    auth: true,
     response: {
-      200: t.Object({
-        message: t.String(),
-        version: t.String(),
-        documentation: t.String(),
-        health: t.String(),
+      200: z.object({
+        message: z.string(),
+        version: z.string(),
+        documentation: z.string(),
+        health: z.string(),
       }),
     },
     detail: {
