@@ -2,10 +2,19 @@ import { db } from '@/db/db'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { openAPI } from 'better-auth/plugins'
 import { betterAuth } from 'better-auth'
+import { emailOTP } from 'better-auth/plugins'
+import { emailQueue } from './email/config'
 
 export const auth = betterAuth({
   basePath: '/auth',
-  plugins: [openAPI()],
+  plugins: [
+    openAPI(),
+    emailOTP({
+      async sendVerificationOTP({ email, otp, type }) {
+        await emailQueue.add('sendOTP', { email, otp, type })
+      },
+    }),
+  ],
   database: drizzleAdapter(db, {
     provider: 'pg',
     usePlural: true,

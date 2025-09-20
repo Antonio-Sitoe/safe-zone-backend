@@ -14,6 +14,13 @@ const EnvSchema = z.object({
   CORS_CREDENTIALS: z.coerce
     .boolean({ error: 'CORS_CREDENTIALS is required' })
     .default(true),
+  EMAIL_USER: z.string({ error: 'EMAIL_USER is required' }),
+  EMAIL_PASSWORD: z.string({ error: 'EMAIL_PASSWORD is required' }),
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: z.string().optional(),
+  SMTP_SECURE: z.string().optional(),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
 })
 
 export const env = EnvSchema.parse(process.env)
