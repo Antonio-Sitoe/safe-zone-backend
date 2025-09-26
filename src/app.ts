@@ -9,7 +9,7 @@ import { betterAuthPlugin } from './middleware/better-auth'
 import { corsPlugin as cors } from './lib/cors'
 import { staticFilesPlugin as staticFiles } from './lib/static-files'
 
-const app = new Elysia()
+export const app = new Elysia()
   .use(cors)
   .use(staticFiles)
   .use(betterAuthPlugin)
@@ -23,7 +23,9 @@ const app = new Elysia()
       hostname: env.HOST,
     },
     (app) => {
-      logger.info(`🦊 Elysia is running at ${app.hostname}:${app.port}`)
+      logger.info(
+        `🦊 Elysia is running at ${app.hostname}:${app.port} ${app.id}`
+      )
       logger.info(
         `📚 Documentação disponível em: http://${app?.hostname}:${app?.port}/openapi`
       )

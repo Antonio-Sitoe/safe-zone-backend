@@ -4,6 +4,7 @@ import { authService } from './auth.service'
 
 import type { Context } from 'elysia'
 import type { LoginRequest, RegisterRequest } from './auth.types'
+import { logger } from '@/utils/logger'
 
 export class AuthController {
   constructor(private readonly service = authService) {}
@@ -30,6 +31,7 @@ export class AuthController {
     try {
       const body = ctx.body as RegisterRequest
       const result = await this.service.signUpEmail(body)
+      logger.info('result', { result })
 
       if (result.error) {
         ctx.set.status = HTTP_STATUS.BAD_REQUEST

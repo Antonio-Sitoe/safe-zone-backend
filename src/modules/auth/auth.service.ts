@@ -55,11 +55,13 @@ export class AuthService {
 
       const result = await auth.api.signUpEmail({
         body: {
+          name: request.name,
           email: request.email,
           password: request.password,
-          name: request.name,
         },
       })
+
+      
 
       if (!result) {
         return { error: { message: 'Erro no registro' } }

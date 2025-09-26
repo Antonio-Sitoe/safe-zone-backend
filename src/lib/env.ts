@@ -8,12 +8,8 @@ const EnvSchema = z.object({
   BETTER_AUTH_SECRET: z.string({ error: 'BETTER_AUTH_SECRET is required' }),
   BETTER_AUTH_URL: z.string({ error: 'BETTER_AUTH_URL is required' }),
   REDIS_URL: z.string({ error: 'REDIS_URL is required' }),
-  CORS_ORIGIN: z.string({ error: 'CORS_ORIGIN is required' }),
   LOG_LEVEL: z.string({ error: 'LOG_LEVEL is required' }),
   LOG_FILE: z.string({ error: 'LOG_FILE is required' }),
-  CORS_CREDENTIALS: z.coerce
-    .boolean({ error: 'CORS_CREDENTIALS is required' })
-    .default(true),
   EMAIL_USER: z.string({ error: 'EMAIL_USER is required' }),
   EMAIL_PASSWORD: z.string({ error: 'EMAIL_PASSWORD is required' }),
   SMTP_HOST: z.string().optional(),
