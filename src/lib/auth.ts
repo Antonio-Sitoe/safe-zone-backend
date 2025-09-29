@@ -7,9 +7,11 @@ import { emailQueue } from './email/config'
 
 export const auth = betterAuth({
   basePath: '/auth',
+  trustedOrigins: ['https://cbf4dbc024b2.ngrok-free.app'],
   plugins: [
     openAPI(),
     emailOTP({
+      otpLength: 4,
       async sendVerificationOTP({ email, otp, type }) {
         await emailQueue.add('sendOTP', { email, otp, type })
       },

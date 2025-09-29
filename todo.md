@@ -8,30 +8,31 @@
 
 ### 1.1 Fluxo de Login
 
-- [ ] Campos obrigatórios: Email/Nome de Usuário, Senha.
-- [ ] Regras:
-  - [ ] Se campos não preenchidos → 'Preencha todos os campos obrigatórios.'
-  - [ ] Se dados inválidos → 'Credenciais inválidas.'
-  - [ ] Se login bem-sucedido → 'Login efetuado com sucesso.'
+- [x] Campos obrigatórios: Email/Nome de Usuário, Senha.
+- [x] Regras:
+  - [x] Se campos não preenchidos → 'Preencha todos os campos obrigatórios.'
+  - [x] Se dados inválidos → 'Credenciais inválidas.'
+  - [x] Se login bem-sucedido → 'Login efetuado com sucesso.'
 
 ### 1.2 Fluxo de Criação de Conta
 
-- [ ] Campos obrigatórios: Nome, Email, Telefone, Senha, Confirmar Senha.
-- [ ] Validações:
-  - [ ] Email válido.
-  - [ ] Telefone apenas dígitos.
-  - [ ] Senha forte (8+ caracteres, maiúscula, minúscula, número, caractere especial).
-  - [ ] Confirmar Senha igual a Senha.
-- [ ] Mensagens: Erro específico ou 'Conta criada com sucesso.'
+- [x] Campos obrigatórios: Nome, Email, Telefone, Senha, Confirmar Senha.
+- [x] Validações:
+  - [x] Email válido.
+  - [x] Telefone apenas dígitos.
+  - [x] Senha forte (8+ caracteres, maiúscula, minúscula, número, caractere especial).
+  - [x] Confirmar Senha igual a Senha.
+- [x] Mensagens: Erro específico ou 'Conta criada com sucesso.'
 
 ### 1.3 Confirmação de Conta
 
-- [ ] Campo para inserir código enviado por email/telefone.
-- [ ] Regras:
-  - [ ] Código válido dentro do prazo.
-  - [ ] Código inválido → 'Código inválido ou expirado.'
-  - [ ] Código correto → 'Conta confirmada com sucesso.'
-  - [ ] Expirado → opção 'Reenviar código'.
+- [x] Campo para inserir código enviado por email/telefone.
+- [x] Regras:
+  - [x] Código válido dentro do prazo.
+  - [x] Código inválido → 'Código inválido ou expirado.'
+  - [x] Código correto → 'Conta confirmada com sucesso.'
+  - [x] Expirado → opção 'Reenviar código'.
+  - [ ] Revisao
 
 ---
 
