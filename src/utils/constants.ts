@@ -52,20 +52,3 @@ export const VALIDATION_RULES = {
   PASSWORD_MIN_LENGTH: 8,
   PASSWORD_MAX_LENGTH: 128,
 } as const
-
-/**
- * Configurações de CORS
- */
-export const CORS_CONFIG = {
-  ORIGIN: ['http://localhost:3000', 'http://localhost:5173'],
-  CREDENTIALS: true,
-} as const
-
-/**
- * Configurações do servidor
- */
-export const SERVER_CONFIG = {
-  PORT: 3000,
-  HOST: '0.0.0.0',
-  ENV: process.env.NODE_ENV || 'development',
-} as const

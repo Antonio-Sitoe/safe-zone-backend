@@ -16,7 +16,6 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
-			"style": "error",
 			"performance": "warn"
 		}
 	},

@@ -32,7 +32,6 @@
   - [x] Código inválido → 'Código inválido ou expirado.'
   - [x] Código correto → 'Conta confirmada com sucesso.'
   - [x] Expirado → opção 'Reenviar código'.
-  - [ ] Revisao
 
 ---
 
