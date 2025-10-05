@@ -1,10 +1,10 @@
-import { env } from "../lib/env";
+import { env } from '../lib/env';
 
 export enum LogLevel {
-	ERROR = "error",
-	WARN = "warn",
-	INFO = "info",
-	DEBUG = "debug",
+	ERROR = 'error',
+	WARN = 'warn',
+	INFO = 'info',
+	DEBUG = 'debug',
 }
 
 class Logger {
@@ -27,7 +27,7 @@ class Logger {
 		return messageLevelIndex <= currentLevelIndex;
 	}
 
-	private formatMessage(level: LogLevel, message: string, meta?: any): string {
+	private formatMessage<T>(level: LogLevel, message: string, meta?: T): string {
 		const timestamp = new Date().toISOString();
 		const levelUpper = level.toUpperCase().padEnd(5);
 
@@ -40,7 +40,7 @@ class Logger {
 		return formattedMessage;
 	}
 
-	private log(level: LogLevel, message: string, meta?: any): void {
+	private log<T>(level: LogLevel, message: string, meta?: T): void {
 		if (!this.shouldLog(level)) return;
 
 		const formattedMessage = this.formatMessage(level, message, meta);
@@ -61,19 +61,19 @@ class Logger {
 		}
 	}
 
-	error(message: string, meta?: any): void {
+	error<T>(message: string, meta?: T): void {
 		this.log(LogLevel.ERROR, message, meta);
 	}
 
-	warn(message: string, meta?: any): void {
+	warn<T>(message: string, meta?: T): void {
 		this.log(LogLevel.WARN, message, meta);
 	}
 
-	info(message: string, meta?: any): void {
+	info<T>(message: string, meta?: T): void {
 		this.log(LogLevel.INFO, message, meta);
 	}
 
-	debug(message: string, meta?: any): void {
+	debug<T>(message: string, meta?: T): void {
 		this.log(LogLevel.DEBUG, message, meta);
 	}
 
@@ -94,7 +94,7 @@ class Logger {
 		this.debug(`DB: ${operation} on ${table}`, { duration });
 	}
 
-	security(event: string, details?: any): void {
+	security<T>(event: string, details?: T): void {
 		this.warn(`Security: ${event}`, details);
 	}
 }

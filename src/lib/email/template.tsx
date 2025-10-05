@@ -8,40 +8,40 @@ import {
 	Section,
 	Tailwind,
 	Text,
-} from "@react-email/components";
+} from '@react-email/components';
 
 interface EmailOTPTemplateProps {
 	otpCode: string;
-	type?: "sign-in" | "email-verification" | "forget-password";
+	type?: 'sign-in' | 'email-verification' | 'forget-password';
 }
 
 export function EmailOTPTemplate({
 	otpCode,
-	type = "email-verification",
+	type = 'email-verification',
 }: EmailOTPTemplateProps) {
 	const getTitle = () => {
 		switch (type) {
-			case "sign-in":
-				return "Código de Acesso";
-			case "email-verification":
-				return "Verificação de Email";
-			case "forget-password":
-				return "Redefinição de Senha";
+			case 'sign-in':
+				return 'Código de Acesso';
+			case 'email-verification':
+				return 'Verificação de Email';
+			case 'forget-password':
+				return 'Redefinição de Senha';
 			default:
-				return "Verificação de Email";
+				return 'Verificação de Email';
 		}
 	};
 
 	const getDescription = () => {
 		switch (type) {
-			case "sign-in":
-				return "Use o código abaixo para fazer login em sua conta";
-			case "email-verification":
-				return "Use o código abaixo para verificar seu endereço de email";
-			case "forget-password":
-				return "Use o código abaixo para redefinir sua senha";
+			case 'sign-in':
+				return 'Use o código abaixo para fazer login em sua conta';
+			case 'email-verification':
+				return 'Use o código abaixo para verificar seu endereço de email';
+			case 'forget-password':
+				return 'Use o código abaixo para redefinir sua senha';
 			default:
-				return "Use o código abaixo para verificar sua conta";
+				return 'Use o código abaixo para verificar sua conta';
 		}
 	};
 

@@ -5,10 +5,10 @@ import {
 	time,
 	timestamp,
 	uuid,
-} from "drizzle-orm/pg-core";
-import { users } from "./users";
+} from 'drizzle-orm/pg-core';
+import { users } from './users';
 
-export const zones = pgTable("zones", {
+export const zones = pgTable('zones', {
 	id: uuid().defaultRandom().primaryKey(),
 	slug: text(),
 	date: date().notNull(),

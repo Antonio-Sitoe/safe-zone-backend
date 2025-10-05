@@ -17,9 +17,9 @@ export interface User {
 }
 
 export enum UserRole {
-	ADMIN = "admin",
-	USER = "user",
-	MODERATOR = "moderator",
+	ADMIN = 'admin',
+	USER = 'user',
+	MODERATOR = 'moderator',
 }
 
 // Tipos de autenticação
@@ -35,7 +35,7 @@ export interface RegisterRequest {
 }
 
 export interface AuthResponse {
-	user: Omit<User, "password">;
+	user: Omit<User, 'password'>;
 	token: string;
 }
 
@@ -56,10 +56,10 @@ export interface Location {
 }
 
 export enum LocationCategory {
-	SAFE = "safe",
-	UNSAFE = "unsafe",
-	NEUTRAL = "neutral",
-	EMERGENCY = "emergency",
+	SAFE = 'safe',
+	UNSAFE = 'unsafe',
+	NEUTRAL = 'neutral',
+	EMERGENCY = 'emergency',
 }
 
 // Tipos de erro
@@ -80,7 +80,7 @@ export interface PaginationParams {
 	page: number;
 	limit: number;
 	sortBy?: string;
-	sortOrder?: "asc" | "desc";
+	sortOrder?: 'asc' | 'desc';
 }
 
 export interface PaginatedResponse<T> {

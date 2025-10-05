@@ -13,7 +13,7 @@ export interface EmailMessage {
 	html: string;
 }
 
-export type EmailType = "sign-in" | "email-verification" | "forget-password";
+export type EmailType = 'sign-in' | 'email-verification' | 'forget-password';
 
 export interface OTPEmailData {
 	email: string;

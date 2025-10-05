@@ -1,13 +1,13 @@
-import { Elysia } from "elysia";
-import { z } from "zod";
+import { Elysia } from 'elysia';
+import { z } from 'zod';
 
 export const health = new Elysia().get(
-	"/",
+	'/',
 	() => ({
-		message: "Safe Zone API",
-		version: "1.0.0",
-		documentation: "/swagger",
-		health: "/health",
+		message: 'Safe Zone API',
+		version: '1.0.0',
+		documentation: '/swagger',
+		health: '/health',
 	}),
 	{
 		response: {
@@ -19,9 +19,9 @@ export const health = new Elysia().get(
 			}),
 		},
 		detail: {
-			tags: ["System"],
-			summary: "Informações da API",
-			description: "Retorna informações básicas sobre a API",
+			tags: ['System'],
+			summary: 'Informações da API',
+			description: 'Retorna informações básicas sobre a API',
 		},
 	},
 );

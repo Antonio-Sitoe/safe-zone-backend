@@ -66,7 +66,7 @@ export interface AuthConfig {
 }
 
 export interface AuthEvent {
-	type: "sign_in" | "sign_up" | "sign_out" | "otp_sent" | "otp_verified";
+	type: 'sign_in' | 'sign_up' | 'sign_out' | 'otp_sent' | 'otp_verified';
 	userId?: string;
 	email?: string;
 	timestamp: Date;

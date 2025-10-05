@@ -1,9 +1,9 @@
-import staticPlugin from "@elysiajs/static";
-import { Elysia } from "elysia";
+import staticPlugin from '@elysiajs/static';
+import { Elysia } from 'elysia';
 
 export const staticFilesPlugin = new Elysia().use(
 	staticPlugin({
-		assets: "public",
-		prefix: "/static",
+		assets: 'public',
+		prefix: '/static',
 	}),
 );

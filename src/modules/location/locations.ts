@@ -1,17 +1,17 @@
-import { Type } from "@sinclair/typebox";
-import { Elysia } from "elysia";
-import { LocationSchema } from "../../db/schemas/Location";
+import { Type } from '@sinclair/typebox';
+import { Elysia } from 'elysia';
+import { LocationSchema } from '../../db/schemas/Location';
 import {
 	createLocationSchema,
 	locationParamsSchema,
 	searchLocationSchema,
 	updateLocationSchema,
-} from "../../utils/schemas/location";
-import { locationController } from "./LocationController";
+} from '../../utils/schemas/location';
+import { locationController } from './LocationController';
 
-export const locationRoutes = new Elysia({ prefix: "/locations" })
+export const locationRoutes = new Elysia({ prefix: '/locations' })
 	// Rota para listar localizações com filtros
-	.get("/", locationController.searchLocations.bind(locationController), {
+	.get('/', locationController.searchLocations.bind(locationController), {
 		query: searchLocationSchema,
 		response: {
 			200: Type.Object({
@@ -39,14 +39,14 @@ export const locationRoutes = new Elysia({ prefix: "/locations" })
 			}),
 		},
 		detail: {
-			tags: ["Locations"],
-			summary: "Listar localizações",
-			description: "Lista localizações com filtros opcionais e paginação",
+			tags: ['Locations'],
+			summary: 'Listar localizações',
+			description: 'Lista localizações com filtros opcionais e paginação',
 		},
 	})
 
 	// Rota para obter estatísticas
-	.get("/stats", locationController.getLocationStats.bind(locationController), {
+	.get('/stats', locationController.getLocationStats.bind(locationController), {
 		response: {
 			200: Type.Object({
 				success: Type.Boolean(),
@@ -65,14 +65,14 @@ export const locationRoutes = new Elysia({ prefix: "/locations" })
 			}),
 		},
 		detail: {
-			tags: ["Locations"],
-			summary: "Estatísticas das localizações",
-			description: "Obtém estatísticas gerais das localizações",
+			tags: ['Locations'],
+			summary: 'Estatísticas das localizações',
+			description: 'Obtém estatísticas gerais das localizações',
 		},
 	})
 
 	// Rota para criar nova localização
-	.post("/", locationController.createLocation.bind(locationController), {
+	.post('/', locationController.createLocation.bind(locationController), {
 		body: createLocationSchema,
 		response: {
 			201: Type.Object({
@@ -97,14 +97,14 @@ export const locationRoutes = new Elysia({ prefix: "/locations" })
 			}),
 		},
 		detail: {
-			tags: ["Locations"],
-			summary: "Criar localização",
-			description: "Cria uma nova localização no sistema",
+			tags: ['Locations'],
+			summary: 'Criar localização',
+			description: 'Cria uma nova localização no sistema',
 		},
 	})
 
 	// Rota para obter localização por ID
-	.get("/:id", locationController.getLocationById.bind(locationController), {
+	.get('/:id', locationController.getLocationById.bind(locationController), {
 		params: locationParamsSchema,
 		response: {
 			200: Type.Object({
@@ -124,14 +124,14 @@ export const locationRoutes = new Elysia({ prefix: "/locations" })
 			}),
 		},
 		detail: {
-			tags: ["Locations"],
-			summary: "Obter localização por ID",
-			description: "Obtém uma localização específica pelo ID",
+			tags: ['Locations'],
+			summary: 'Obter localização por ID',
+			description: 'Obtém uma localização específica pelo ID',
 		},
 	})
 
 	// Rota para atualizar localização
-	.put("/:id", locationController.updateLocation.bind(locationController), {
+	.put('/:id', locationController.updateLocation.bind(locationController), {
 		params: locationParamsSchema,
 		body: updateLocationSchema,
 		response: {
@@ -162,14 +162,14 @@ export const locationRoutes = new Elysia({ prefix: "/locations" })
 			}),
 		},
 		detail: {
-			tags: ["Locations"],
-			summary: "Atualizar localização",
-			description: "Atualiza uma localização existente",
+			tags: ['Locations'],
+			summary: 'Atualizar localização',
+			description: 'Atualiza uma localização existente',
 		},
 	})
 
 	// Rota para remover localização
-	.delete("/:id", locationController.deleteLocation.bind(locationController), {
+	.delete('/:id', locationController.deleteLocation.bind(locationController), {
 		params: locationParamsSchema,
 		response: {
 			200: Type.Object({
@@ -189,8 +189,8 @@ export const locationRoutes = new Elysia({ prefix: "/locations" })
 			}),
 		},
 		detail: {
-			tags: ["Locations"],
-			summary: "Remover localização",
-			description: "Remove uma localização do sistema",
+			tags: ['Locations'],
+			summary: 'Remover localização',
+			description: 'Remove uma localização do sistema',
 		},
 	});

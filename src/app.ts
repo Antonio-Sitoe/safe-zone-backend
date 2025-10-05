@@ -1,13 +1,13 @@
-import { Elysia } from "elysia";
-import { authRoutes } from "@/modules/auth";
-import { health } from "@/modules/health";
-import { corsPlugin as cors } from "./lib/cors";
-import { env } from "./lib/env";
-import { openapiConfig as openapi } from "./lib/openapi";
-import { staticFilesPlugin as staticFiles } from "./lib/static-files";
-import { betterAuthPlugin } from "./middleware/better-auth";
-import { errorHandler } from "./middleware/errorHandler";
-import { logger } from "./utils/logger";
+import { Elysia } from 'elysia';
+import { authRoutes } from '@/modules/auth';
+import { health } from '@/modules/health';
+import { corsPlugin as cors } from './lib/cors';
+import { env } from './lib/env';
+import { openapiConfig as openapi } from './lib/openapi';
+import { staticFilesPlugin as staticFiles } from './lib/static-files';
+import { betterAuthPlugin } from './middleware/better-auth';
+import { errorHandler } from './middleware/errorHandler';
+import { logger } from './utils/logger';
 
 export const app = new Elysia()
 	.use(cors)

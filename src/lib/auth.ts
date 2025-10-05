@@ -1,23 +1,23 @@
-import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { emailOTP, openAPI } from "better-auth/plugins";
-import { db } from "@/db/db";
-import { emailQueue } from "./email/config";
+import { betterAuth } from 'better-auth';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { emailOTP, openAPI } from 'better-auth/plugins';
+import { db } from '@/db/db';
+import { emailQueue } from './email/config';
 
 export const auth = betterAuth({
-	basePath: "/auth",
-	trustedOrigins: ["https://cbf4dbc024b2.ngrok-free.app"],
+	basePath: '/auth',
+	trustedOrigins: ['https://cbf4dbc024b2.ngrok-free.app'],
 	plugins: [
 		openAPI(),
 		emailOTP({
 			otpLength: 4,
 			async sendVerificationOTP({ email, otp, type }) {
-				await emailQueue.add("sendOTP", { email, otp, type });
+				await emailQueue.add('sendOTP', { email, otp, type });
 			},
 		}),
 	],
 	database: drizzleAdapter(db, {
-		provider: "pg",
+		provider: 'pg',
 		usePlural: true,
 	}),
 	advanced: {
@@ -49,7 +49,7 @@ const getSchema = async () => {
 };
 
 export const OpenAPI = {
-	getPaths: (prefix = "/auth") =>
+	getPaths: (prefix = '/auth') =>
 		getSchema().then(({ paths }) => {
 			const reference: typeof paths = Object.create(null);
 
@@ -60,7 +60,7 @@ export const OpenAPI = {
 				for (const method of Object.keys(paths[path])) {
 					const operation = (reference[key] as any)[method];
 
-					operation.tags = ["Better Auth"];
+					operation.tags = ['Better Auth'];
 				}
 			}
 

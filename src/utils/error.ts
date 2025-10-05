@@ -1,4 +1,4 @@
-import { HTTP_STATUS } from "./constants";
+import { HTTP_STATUS } from './constants';
 
 /**
  * Classe personalizada para erros da aplicação
@@ -32,7 +32,7 @@ export function createValidationError(message: string): AppError {
  * Cria um erro de não encontrado
  */
 export function createNotFoundError(
-	message: string = "Recurso não encontrado",
+	message: string = 'Recurso não encontrado',
 ): AppError {
 	return new AppError(message, HTTP_STATUS.NOT_FOUND);
 }
@@ -41,7 +41,7 @@ export function createNotFoundError(
  * Cria um erro de não autorizado
  */
 export function createUnauthorizedError(
-	message: string = "Não autorizado",
+	message: string = 'Não autorizado',
 ): AppError {
 	return new AppError(message, HTTP_STATUS.UNAUTHORIZED);
 }
@@ -50,7 +50,7 @@ export function createUnauthorizedError(
  * Cria um erro de acesso negado
  */
 export function createForbiddenError(
-	message: string = "Acesso negado",
+	message: string = 'Acesso negado',
 ): AppError {
 	return new AppError(message, HTTP_STATUS.FORBIDDEN);
 }
@@ -59,7 +59,7 @@ export function createForbiddenError(
  * Cria um erro de conflito
  */
 export function createConflictError(
-	message: string = "Conflito de dados",
+	message: string = 'Conflito de dados',
 ): AppError {
 	return new AppError(message, HTTP_STATUS.CONFLICT);
 }
@@ -68,7 +68,7 @@ export function createConflictError(
  * Cria um erro de requisição inválida
  */
 export function createBadRequestError(
-	message: string = "Requisição inválida",
+	message: string = 'Requisição inválida',
 ): AppError {
 	return new AppError(message, HTTP_STATUS.BAD_REQUEST);
 }
@@ -87,7 +87,7 @@ export function isOperationalError(error: Error): boolean {
  * Trata erros não capturados
  */
 export function handleUncaughtException(error: Error): void {
-	console.error("Uncaught Exception:", error);
+	console.error('Uncaught Exception:', error);
 	process.exit(1);
 }
 
@@ -98,6 +98,6 @@ export function handleUnhandledRejection(
 	reason: any,
 	promise: Promise<any>,
 ): void {
-	console.error("Unhandled Rejection at:", promise, "reason:", reason);
+	console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 	process.exit(1);
 }

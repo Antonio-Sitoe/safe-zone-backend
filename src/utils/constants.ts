@@ -18,19 +18,19 @@ export const HTTP_STATUS = {
  * Categorias de localização
  */
 export const LOCATION_CATEGORIES = {
-	SAFE: "safe",
-	UNSAFE: "unsafe",
-	NEUTRAL: "neutral",
-	EMERGENCY: "emergency",
+	SAFE: 'safe',
+	UNSAFE: 'unsafe',
+	NEUTRAL: 'neutral',
+	EMERGENCY: 'emergency',
 } as const;
 
 /**
  * Roles de usuário
  */
 export const USER_ROLES = {
-	ADMIN: "admin",
-	USER: "user",
-	MODERATOR: "moderator",
+	ADMIN: 'admin',
+	USER: 'user',
+	MODERATOR: 'moderator',
 } as const;
 
 /**

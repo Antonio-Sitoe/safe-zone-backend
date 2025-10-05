@@ -1,13 +1,13 @@
-import { db } from "../database/database";
+import { db } from '../database/database';
 import type {
 	CreateLocation,
 	Location,
 	SearchLocation,
 	UpdateLocation,
-} from "../database/schemas/Location";
-import { HTTP_STATUS } from "../utils/constants";
-import { AppError } from "../utils/error";
-import { logger } from "../utils/logger";
+} from '../database/schemas/Location';
+import { HTTP_STATUS } from '../utils/constants';
+import { AppError } from '../utils/error';
+import { logger } from '../utils/logger';
 
 /**
  * Serviço para gerenciar localizações
@@ -18,7 +18,7 @@ export class LocationService {
 	 */
 	async createLocation(data: CreateLocation): Promise<Location> {
 		try {
-			logger.info("Creating new location", {
+			logger.info('Creating new location', {
 				name: data.name,
 				category: data.category,
 			});
@@ -35,17 +35,17 @@ export class LocationService {
 
 			if (nearbyLocation) {
 				throw new AppError(
-					"Já existe uma localização muito próxima desta posição",
+					'Já existe uma localização muito próxima desta posição',
 					HTTP_STATUS.CONFLICT,
 				);
 			}
 
 			const location = await db.createLocation(data);
 
-			logger.info("Location created successfully", { id: location.id });
+			logger.info('Location created successfully', { id: location.id });
 			return location;
 		} catch (error) {
-			logger.error("Error creating location", { error: error.message, data });
+			logger.error('Error creating location', { error: error.message, data });
 			throw error;
 		}
 	}
@@ -55,16 +55,16 @@ export class LocationService {
 	 */
 	async getLocationById(id: string): Promise<Location> {
 		try {
-			logger.info("Getting location by ID", { id });
+			logger.info('Getting location by ID', { id });
 
 			const location = await db.getLocationById(id);
 			if (!location) {
-				throw new AppError("Localização não encontrada", HTTP_STATUS.NOT_FOUND);
+				throw new AppError('Localização não encontrada', HTTP_STATUS.NOT_FOUND);
 			}
 
 			return location;
 		} catch (error) {
-			logger.error("Error getting location by ID", {
+			logger.error('Error getting location by ID', {
 				error: error.message,
 				id,
 			});
@@ -82,7 +82,7 @@ export class LocationService {
 		offset: number;
 	}> {
 		try {
-			logger.info("Searching locations", { searchParams });
+			logger.info('Searching locations', { searchParams });
 
 			const [locations, total] = await Promise.all([
 				db.searchLocations(searchParams),
@@ -96,7 +96,7 @@ export class LocationService {
 				offset: searchParams.offset,
 			};
 		} catch (error) {
-			logger.error("Error searching locations", {
+			logger.error('Error searching locations', {
 				error: error.message,
 				searchParams,
 			});
@@ -112,12 +112,12 @@ export class LocationService {
 		updates: Partial<UpdateLocation>,
 	): Promise<Location> {
 		try {
-			logger.info("Updating location", { id, updates });
+			logger.info('Updating location', { id, updates });
 
 			// Verificar se a localização existe
 			const existing = await db.getLocationById(id);
 			if (!existing) {
-				throw new AppError("Localização não encontrada", HTTP_STATUS.NOT_FOUND);
+				throw new AppError('Localização não encontrada', HTTP_STATUS.NOT_FOUND);
 			}
 
 			// Validações de negócio se houver mudanças de coordenadas
@@ -140,7 +140,7 @@ export class LocationService {
 				const nearbyLocation = await this.findNearbyLocation(lat, lng, 0.1, id);
 				if (nearbyLocation) {
 					throw new AppError(
-						"Já existe uma localização muito próxima desta posição",
+						'Já existe uma localização muito próxima desta posição',
 						HTTP_STATUS.CONFLICT,
 					);
 				}
@@ -149,15 +149,15 @@ export class LocationService {
 			const updatedLocation = await db.updateLocation(id, updates);
 			if (!updatedLocation) {
 				throw new AppError(
-					"Erro ao atualizar localização",
+					'Erro ao atualizar localização',
 					HTTP_STATUS.INTERNAL_SERVER_ERROR,
 				);
 			}
 
-			logger.info("Location updated successfully", { id });
+			logger.info('Location updated successfully', { id });
 			return updatedLocation;
 		} catch (error) {
-			logger.error("Error updating location", {
+			logger.error('Error updating location', {
 				error: error.message,
 				id,
 				updates,
@@ -171,25 +171,25 @@ export class LocationService {
 	 */
 	async deleteLocation(id: string): Promise<void> {
 		try {
-			logger.info("Deleting location", { id });
+			logger.info('Deleting location', { id });
 
 			// Verificar se a localização existe
 			const existing = await db.getLocationById(id);
 			if (!existing) {
-				throw new AppError("Localização não encontrada", HTTP_STATUS.NOT_FOUND);
+				throw new AppError('Localização não encontrada', HTTP_STATUS.NOT_FOUND);
 			}
 
 			const deleted = await db.deleteLocation(id);
 			if (!deleted) {
 				throw new AppError(
-					"Erro ao remover localização",
+					'Erro ao remover localização',
 					HTTP_STATUS.INTERNAL_SERVER_ERROR,
 				);
 			}
 
-			logger.info("Location deleted successfully", { id });
+			logger.info('Location deleted successfully', { id });
 		} catch (error) {
-			logger.error("Error deleting location", { error: error.message, id });
+			logger.error('Error deleting location', { error: error.message, id });
 			throw error;
 		}
 	}
@@ -222,14 +222,14 @@ export class LocationService {
 		// Validação de coordenadas válidas
 		if (data.latitude < -90 || data.latitude > 90) {
 			throw new AppError(
-				"Latitude deve estar entre -90 e 90",
+				'Latitude deve estar entre -90 e 90',
 				HTTP_STATUS.BAD_REQUEST,
 			);
 		}
 
 		if (data.longitude < -180 || data.longitude > 180) {
 			throw new AppError(
-				"Longitude deve estar entre -180 e 180",
+				'Longitude deve estar entre -180 e 180',
 				HTTP_STATUS.BAD_REQUEST,
 			);
 		}
@@ -237,16 +237,16 @@ export class LocationService {
 		// Validação de rating se fornecido
 		if (data.rating && (data.rating < 1 || data.rating > 5)) {
 			throw new AppError(
-				"Rating deve estar entre 1 e 5",
+				'Rating deve estar entre 1 e 5',
 				HTTP_STATUS.BAD_REQUEST,
 			);
 		}
 
 		// Validação de categoria
-		const validCategories = ["safe", "unsafe", "neutral"];
+		const validCategories = ['safe', 'unsafe', 'neutral'];
 		if (!validCategories.includes(data.category)) {
 			throw new AppError(
-				`Categoria deve ser uma das seguintes: ${validCategories.join(", ")}`,
+				`Categoria deve ser uma das seguintes: ${validCategories.join(', ')}`,
 				HTTP_STATUS.BAD_REQUEST,
 			);
 		}
@@ -262,7 +262,7 @@ export class LocationService {
 		averageRating: number;
 	}> {
 		try {
-			logger.info("Getting location statistics");
+			logger.info('Getting location statistics');
 
 			const allLocations = await db.searchLocations({ limit: 1000, offset: 0 });
 
@@ -297,7 +297,7 @@ export class LocationService {
 
 			return stats;
 		} catch (error) {
-			logger.error("Error getting location statistics", {
+			logger.error('Error getting location statistics', {
 				error: error.message,
 			});
 			throw error;

@@ -1,13 +1,13 @@
-import { pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { zones } from "./zone";
+import { pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { zones } from './zone';
 
-export const mediaTypeEnum = pgEnum("media_type", ["image", "video"]);
+export const mediaTypeEnum = pgEnum('media_type', ['image', 'video']);
 
-export const mediaZones = pgTable("media_zones", {
+export const mediaZones = pgTable('media_zones', {
 	id: uuid().defaultRandom().primaryKey(),
 	url: text().notNull(),
 	zoneId: uuid().references(() => zones.id),
-	type: mediaTypeEnum("type").default("image").notNull(),
+	type: mediaTypeEnum('type').default('image').notNull(),
 	createdAt: timestamp().defaultNow().notNull(),
 	updatedAt: timestamp().notNull(),
 });

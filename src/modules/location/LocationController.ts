@@ -1,18 +1,18 @@
-import type { Context } from "elysia";
-import { HTTP_STATUS } from "../../utils/constants";
-import { logger } from "../../utils/logger";
+import type { Context } from 'elysia';
+import { HTTP_STATUS } from '../../utils/constants';
+import { logger } from '../../utils/logger';
 import {
 	errorResponse,
 	notFoundResponse,
 	successResponse,
-} from "../../utils/response";
+} from '../../utils/response';
 import type {
 	CreateLocationRequest,
 	LocationParams,
 	SearchLocationRequest,
 	UpdateLocationRequest,
-} from "../../utils/schemas/location";
-import { locationService } from "./LocationService";
+} from '../../utils/schemas/location';
+import { locationService } from './LocationService';
 
 /**
  * Controller para gerenciar localizações
@@ -25,7 +25,7 @@ export class LocationController {
 		try {
 			const body = ctx.body as CreateLocationRequest;
 
-			logger.info("Creating location", {
+			logger.info('Creating location', {
 				name: body.name,
 				category: body.category,
 			});
@@ -34,18 +34,18 @@ export class LocationController {
 
 			return successResponse(
 				location,
-				"Localização criada com sucesso",
+				'Localização criada com sucesso',
 				HTTP_STATUS.CREATED,
 			);
 		} catch (error: unknown) {
 			const errorMessage =
-				error instanceof Error ? error.message : "Erro desconhecido";
-			logger.error("Error creating location", {
+				error instanceof Error ? error.message : 'Erro desconhecido';
+			logger.error('Error creating location', {
 				error: errorMessage,
 				body: ctx.body,
 			});
 
-			if (error && typeof error === "object" && "statusCode" in error) {
+			if (error && typeof error === 'object' && 'statusCode' in error) {
 				return errorResponse(
 					errorMessage,
 					(error as { statusCode: number }).statusCode,
@@ -53,7 +53,7 @@ export class LocationController {
 			}
 
 			return errorResponse(
-				"Erro interno do servidor",
+				'Erro interno do servidor',
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
 			);
 		}
@@ -66,29 +66,29 @@ export class LocationController {
 		try {
 			const { id } = ctx.params as LocationParams;
 
-			logger.info("Getting location by ID", { id });
+			logger.info('Getting location by ID', { id });
 
 			const location = await locationService.getLocationById(id);
 
-			return successResponse(location, "Localização encontrada com sucesso");
+			return successResponse(location, 'Localização encontrada com sucesso');
 		} catch (error: unknown) {
 			const errorMessage =
-				error instanceof Error ? error.message : "Erro desconhecido";
-			logger.error("Error getting location by ID", {
+				error instanceof Error ? error.message : 'Erro desconhecido';
+			logger.error('Error getting location by ID', {
 				error: errorMessage,
 				id: ctx.params?.id,
 			});
 
 			if (
 				error &&
-				typeof error === "object" &&
-				"statusCode" in error &&
+				typeof error === 'object' &&
+				'statusCode' in error &&
 				(error as { statusCode: number }).statusCode === HTTP_STATUS.NOT_FOUND
 			) {
-				return notFoundResponse("Localização não encontrada");
+				return notFoundResponse('Localização não encontrada');
 			}
 
-			if (error && typeof error === "object" && "statusCode" in error) {
+			if (error && typeof error === 'object' && 'statusCode' in error) {
 				return errorResponse(
 					errorMessage,
 					(error as { statusCode: number }).statusCode,
@@ -96,7 +96,7 @@ export class LocationController {
 			}
 
 			return errorResponse(
-				"Erro interno do servidor",
+				'Erro interno do servidor',
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
 			);
 		}
@@ -109,7 +109,7 @@ export class LocationController {
 		try {
 			const query = ctx.query as SearchLocationRequest;
 
-			logger.info("Searching locations", { query });
+			logger.info('Searching locations', { query });
 
 			const result = await locationService.searchLocations(query);
 
@@ -123,17 +123,17 @@ export class LocationController {
 						pages: Math.ceil(result.total / result.limit),
 					},
 				},
-				"Localizações encontradas com sucesso",
+				'Localizações encontradas com sucesso',
 			);
 		} catch (error: unknown) {
 			const errorMessage =
-				error instanceof Error ? error.message : "Erro desconhecido";
-			logger.error("Error searching locations", {
+				error instanceof Error ? error.message : 'Erro desconhecido';
+			logger.error('Error searching locations', {
 				error: errorMessage,
 				query: ctx.query,
 			});
 
-			if (error && typeof error === "object" && "statusCode" in error) {
+			if (error && typeof error === 'object' && 'statusCode' in error) {
 				return errorResponse(
 					errorMessage,
 					(error as { statusCode: number }).statusCode,
@@ -141,7 +141,7 @@ export class LocationController {
 			}
 
 			return errorResponse(
-				"Erro interno do servidor",
+				'Erro interno do servidor',
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
 			);
 		}
@@ -155,15 +155,15 @@ export class LocationController {
 			const { id } = ctx.params as LocationParams;
 			const body = ctx.body as Partial<UpdateLocationRequest>;
 
-			logger.info("Updating location", { id, updates: body });
+			logger.info('Updating location', { id, updates: body });
 
 			const location = await locationService.updateLocation(id, body);
 
-			return successResponse(location, "Localização atualizada com sucesso");
+			return successResponse(location, 'Localização atualizada com sucesso');
 		} catch (error: unknown) {
 			const errorMessage =
-				error instanceof Error ? error.message : "Erro desconhecido";
-			logger.error("Error updating location", {
+				error instanceof Error ? error.message : 'Erro desconhecido';
+			logger.error('Error updating location', {
 				error: errorMessage,
 				id: ctx.params?.id,
 				body: ctx.body,
@@ -171,14 +171,14 @@ export class LocationController {
 
 			if (
 				error &&
-				typeof error === "object" &&
-				"statusCode" in error &&
+				typeof error === 'object' &&
+				'statusCode' in error &&
 				(error as { statusCode: number }).statusCode === HTTP_STATUS.NOT_FOUND
 			) {
-				return notFoundResponse("Localização não encontrada");
+				return notFoundResponse('Localização não encontrada');
 			}
 
-			if (error && typeof error === "object" && "statusCode" in error) {
+			if (error && typeof error === 'object' && 'statusCode' in error) {
 				return errorResponse(
 					errorMessage,
 					(error as { statusCode: number }).statusCode,
@@ -186,7 +186,7 @@ export class LocationController {
 			}
 
 			return errorResponse(
-				"Erro interno do servidor",
+				'Erro interno do servidor',
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
 			);
 		}
@@ -199,29 +199,29 @@ export class LocationController {
 		try {
 			const { id } = ctx.params as LocationParams;
 
-			logger.info("Deleting location", { id });
+			logger.info('Deleting location', { id });
 
 			await locationService.deleteLocation(id);
 
-			return successResponse(null, "Localização removida com sucesso");
+			return successResponse(null, 'Localização removida com sucesso');
 		} catch (error: unknown) {
 			const errorMessage =
-				error instanceof Error ? error.message : "Erro desconhecido";
-			logger.error("Error deleting location", {
+				error instanceof Error ? error.message : 'Erro desconhecido';
+			logger.error('Error deleting location', {
 				error: errorMessage,
 				id: ctx.params?.id,
 			});
 
 			if (
 				error &&
-				typeof error === "object" &&
-				"statusCode" in error &&
+				typeof error === 'object' &&
+				'statusCode' in error &&
 				(error as { statusCode: number }).statusCode === HTTP_STATUS.NOT_FOUND
 			) {
-				return notFoundResponse("Localização não encontrada");
+				return notFoundResponse('Localização não encontrada');
 			}
 
-			if (error && typeof error === "object" && "statusCode" in error) {
+			if (error && typeof error === 'object' && 'statusCode' in error) {
 				return errorResponse(
 					errorMessage,
 					(error as { statusCode: number }).statusCode,
@@ -229,7 +229,7 @@ export class LocationController {
 			}
 
 			return errorResponse(
-				"Erro interno do servidor",
+				'Erro interno do servidor',
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
 			);
 		}
@@ -240,19 +240,19 @@ export class LocationController {
 	 */
 	async getLocationStats(_ctx: Context) {
 		try {
-			logger.info("Getting location statistics");
+			logger.info('Getting location statistics');
 
 			const stats = await locationService.getLocationStats();
 
-			return successResponse(stats, "Estatísticas obtidas com sucesso");
+			return successResponse(stats, 'Estatísticas obtidas com sucesso');
 		} catch (error: unknown) {
 			const errorMessage =
-				error instanceof Error ? error.message : "Erro desconhecido";
-			logger.error("Error getting location statistics", {
+				error instanceof Error ? error.message : 'Erro desconhecido';
+			logger.error('Error getting location statistics', {
 				error: errorMessage,
 			});
 
-			if (error && typeof error === "object" && "statusCode" in error) {
+			if (error && typeof error === 'object' && 'statusCode' in error) {
 				return errorResponse(
 					errorMessage,
 					(error as { statusCode: number }).statusCode,
@@ -260,7 +260,7 @@ export class LocationController {
 			}
 
 			return errorResponse(
-				"Erro interno do servidor",
+				'Erro interno do servidor',
 				HTTP_STATUS.INTERNAL_SERVER_ERROR,
 			);
 		}
