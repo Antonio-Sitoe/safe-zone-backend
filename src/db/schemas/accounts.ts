@@ -1,12 +1,9 @@
 import { text, timestamp, uuid } from 'drizzle-orm/pg-core'
 import { pgTable } from 'drizzle-orm/pg-core'
 import { users } from './users'
-import { v4 as uuidv4 } from 'uuid'
 
 export const accounts = pgTable('accounts', {
-  id: uuid('id')
-    .primaryKey()
-    .$defaultFn(() => uuidv4()),
+  id: uuid('id').defaultRandom().primaryKey(),
   accountId: text('account_id').notNull(),
   providerId: text('provider_id').notNull(),
   userId: uuid('user_id')
