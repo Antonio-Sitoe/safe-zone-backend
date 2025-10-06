@@ -1,6 +1,6 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { emailOTP, openAPI } from 'better-auth/plugins';
+import { emailOTP, openAPI, bearer } from 'better-auth/plugins';
 import { db } from '@/db/db';
 import { emailQueue } from './email/config';
 
@@ -9,6 +9,7 @@ export const auth = betterAuth({
 	trustedOrigins: ['https://cbf4dbc024b2.ngrok-free.app'],
 	plugins: [
 		openAPI(),
+		bearer(),
 		emailOTP({
 			otpLength: 4,
 			async sendVerificationOTP({ email, otp, type }) {

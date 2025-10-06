@@ -1,5 +1,6 @@
 import {
 	date,
+	pgEnum,
 	pgTable,
 	text,
 	time,
@@ -8,6 +9,8 @@ import {
 } from 'drizzle-orm/pg-core';
 import { users } from './users';
 
+export const zoneTypeEnum = pgEnum('zone_type', ['SAFE', 'DANGER']);
+
 export const zones = pgTable('zones', {
 	id: uuid().defaultRandom().primaryKey(),
 	slug: text(),
@@ -15,6 +18,7 @@ export const zones = pgTable('zones', {
 	hour: time().notNull(),
 	description: text(),
 	coordinates: text(),
+	type: zoneTypeEnum('type'),
 	userId: uuid()
 		.references(() => users.id)
 		.notNull(),
@@ -26,3 +30,4 @@ export const zones = pgTable('zones', {
 
 export type Zone = typeof zones.$inferSelect;
 export type NewZone = typeof zones.$inferInsert;
+export type ZoneType = (typeof zoneTypeEnum.enumValues)[number];

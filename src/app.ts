@@ -1,5 +1,6 @@
 import { Elysia } from 'elysia';
 import { authRoutes } from '@/modules/auth';
+import { zoneRoutes } from '@/modules/zone';
 import { health } from '@/modules/health';
 import { corsPlugin as cors } from './lib/cors';
 import { env } from './lib/env';
@@ -12,10 +13,11 @@ import { logger } from './utils/logger';
 export const app = new Elysia()
 	.use(cors)
 	.use(staticFiles)
-	.use(betterAuthPlugin)
 	.use(openapi)
 	.use(health)
 	.use(authRoutes)
+	.use(betterAuthPlugin)
+	.use(zoneRoutes)
 	.use(errorHandler)
 	.listen(
 		{

@@ -9,5 +9,4 @@ const connection = postgres(env.DATABASE_URL, {
 
 export const db = drizzle(connection, {
 	schema,
-	casing: 'snake_case',
 });

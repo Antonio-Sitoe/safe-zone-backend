@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17
+    image: postgis/postgis:17-master
     container_name: safe-zone-postgres
     environment:
       POSTGRES_DB: safe_zone_db
