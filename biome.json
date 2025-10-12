@@ -16,7 +16,13 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
-			"performance": "warn"
+			"performance": "warn",
+			"style": {
+				"useImportType": "off"
+			},
+			"nursery": {
+				"useSortedClasses": "off"
+			}
 		}
 	},
 	"javascript": {
@@ -25,11 +31,6 @@
 		}
 	},
 	"assist": {
-		"enabled": true,
-		"actions": {
-			"source": {
-				"organizeImports": "on"
-			}
-		}
+		"enabled": true
 	}
 }

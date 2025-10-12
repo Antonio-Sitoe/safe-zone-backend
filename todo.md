@@ -1,9 +1,5 @@
 # Documento de Requisitos Funcionais – Aplicação Mapa Seguro
 
-**Versão:** 1.0
-
----
-
 ## 1. Cadastro & Login
 
 ### 1.1 Fluxo de Login
@@ -33,6 +29,48 @@
   - [x] Código correto → 'Conta confirmada com sucesso.'
   - [x] Expirado → opção 'Reenviar código'.
 
+### Cadastro & Login
+
+- [ ] Usuária só acessa após validação de código.
+- [ ] Emails/telefones inválidos bloqueiam cadastro.
+- [ ] Senhas não coincidentes impedem criação.
+
+### 1. Recuperação de Senha
+
+- [ ] Fluxo para quando a usuária esquecer a senha.
+- [ ] Envio de código por email/telefone para redefinição.
+
+## 3. Criar Zona Segura
+
+- [x] Campos obrigatórios: Localização (GPS/manual), Data, Hora, Descrição.
+- [x] Checkbox:
+  - [x] Boa iluminação
+  - [x] Presença policial
+  - [x] Transporte público
+- [ ] Upload de fotos/vídeos (opcional).
+- [x] Ações: Guardar (salva), Fechar (cancela).
+
+---
+
+## 4. Criar Zona de Perigo
+
+- [x] Campos obrigatórios: Localização (GPS/manual), Data, Hora, Descrição.
+- [x] Checkbox:
+  - [x] Iluminação insuficiente
+  - [x] Falta de policiamento
+  - [x] Casas abandonadas
+- [] Upload de fotos/vídeos (opcional).
+- [x] Ações: Guardar (salva), Fechar (cancela).
+
+---
+
+### Zonas
+
+- [x] Campos obrigatórios preenchidos.
+- [x] Localização, data e hora válidos.
+- [x] Zona exibida no mapa imediatamente.
+- [ ] RN05 – Áreas críticas são geradas com ≥10 relatos.
+
 ---
 
 ## 2. Mapa com Localização Atual
@@ -43,38 +81,9 @@
   - [ ] Zonas de Perigo (vermelho).
   - [ ] Áreas Críticas (10+ relatos, vermelho forte).
 - [ ] Se usuária próxima de área de perigo/crítica → notificação em tempo real.
-
----
-
-## 3. Criar Zona Segura
-
-- [ ] Campos obrigatórios: Localização (GPS/manual), Data, Hora, Descrição.
-- [ ] Checkbox:
-  - [ ] Boa iluminação
-  - [ ] Presença policial
-  - [ ] Transporte público
-- [ ] Upload de fotos/vídeos (opcional).
-- [ ] Ações: Guardar (salva), Fechar (cancela).
-
----
-
-## 4. Criar Zona de Perigo
-
-- [ ] Campos obrigatórios: Localização (GPS/manual), Data, Hora, Descrição.
-- [ ] Checkbox:
-  - [ ] Iluminação insuficiente
-  - [ ] Falta de policiamento
-  - [ ] Casas abandonadas
-- [ ] Upload de fotos/vídeos (opcional).
-- [ ] Ações: Guardar (salva), Fechar (cancela).
-
----
-
-## 5. Alerta Coletivo
-
-- [ ] 10+ usuárias → Área marcada como Crítica.
-- [ ] Ícone diferenciado no mapa.
-- [ ] Notificação enviada para usuárias próximas.
+- [ ] Sempre centralizado na localização atual.
+- [ ] Exibe ícones diferentes para zonas.
+- [ ] Notificação em tempo real em zonas perigosas.
 
 ---
 
@@ -94,13 +103,25 @@
 - [ ] Validação: participantes devem estar cadastrados ou novos números.
 - [ ] Mensagem: 'Grupo criado com sucesso.'
 
+### Comunidade de Apoio
+
+- [ ] Contatos duplicados não permitidos.
+- [ ] Grupos com múltiplos participantes.
+- [ ] Usuária pode editar ou excluir contatos e grupos.
+
 ### 6.3 Disparo de Alertas
 
 - [ ] Alerta Individual: Enviado para contatos e grupos.
 - [ ] Alerta Coletivo (10+ relatos): dispara alerta para todos os contatos/grupos.
 - [ ] Notificações: via push e SMS, com local + risco + data/hora.
 
----
+## 5. Alerta Coletivo
+
+- [ ] 10+ usuárias → Área marcada como Crítica.
+- [ ] Ícone diferenciado no mapa.
+- [ ] Notificação enviada para usuárias próximas.
+- [ ] Alerta individual notifica todos os contatos e grupos.
+- [ ] 10+ relatos → Área Crítica e notificação em tempo real.
 
 ## 7. Regras de Negócio
 
@@ -108,49 +129,10 @@
 - [ ] RN02 – Apenas usuárias cadastradas podem disparar alertas.
 - [ ] RN03 – Contatos e grupos podem ser editados/excluídos.
 - [ ] RN04 – Cada alerta é registrado e vinculado ao mapa.
-- [ ] RN05 – Áreas críticas são geradas com ≥10 relatos.
 
 ---
 
 ## 8. Critérios de Aceitação
-
-### Cadastro & Login
-
-- [ ] Usuária só acessa após validação de código.
-- [ ] Emails/telefones inválidos bloqueiam cadastro.
-- [ ] Senhas não coincidentes impedem criação.
-
-### Mapa
-
-- [ ] Sempre centralizado na localização atual.
-- [ ] Exibe ícones diferentes para zonas.
-- [ ] Notificação em tempo real em zonas perigosas.
-
-### Zonas
-
-- [ ] Campos obrigatórios preenchidos.
-- [ ] Localização, data e hora válidos.
-- [ ] Zona exibida no mapa imediatamente.
-
-### Alertas
-
-- [ ] Alerta individual notifica todos os contatos e grupos.
-- [ ] 10+ relatos → Área Crítica e notificação em tempo real.
-
-### Comunidade de Apoio
-
-- [ ] Contatos duplicados não permitidos.
-- [ ] Grupos com múltiplos participantes.
-- [ ] Usuária pode editar ou excluir contatos e grupos.
-
----
-
-## NB
-
-### 1. Recuperação de Senha
-
-- [ ] Fluxo para quando a usuária esquecer a senha.
-- [ ] Envio de código por email/telefone para redefinição.
 
 ### 2. Gestão de Perfil da Usuária
 

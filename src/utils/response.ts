@@ -1,4 +1,13 @@
+import { z } from 'zod';
 import type { ApiResponse } from '@/@types';
+
+export const ApiResponseSchema = <T extends z.ZodTypeAny>(dataSchema: T) =>
+	z.object({
+		success: z.boolean(),
+		message: z.string(),
+		data: dataSchema.optional(),
+		error: z.string().optional(),
+	});
 
 export function successResponse<T>(
 	data: T,

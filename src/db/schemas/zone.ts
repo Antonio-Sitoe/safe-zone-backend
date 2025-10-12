@@ -27,7 +27,3 @@ export const zones = pgTable('zones', {
 		.$onUpdate(() => new Date())
 		.notNull(),
 });
-
-export type Zone = typeof zones.$inferSelect;
-export type NewZone = typeof zones.$inferInsert;
-export type ZoneType = (typeof zoneTypeEnum.enumValues)[number];

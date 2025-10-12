@@ -1,10 +1,18 @@
 import { Elysia } from 'elysia'
 import { zoneController } from './zone.controller'
-import { ZoneBodySchema, ZoneResponseSchema } from './zone.schema'
+import {
+  getAllResponse,
+  updateZoneResponseSchema,
+  ZoneBodySchema,
+  UpdateZoneBodySchema,
+  zoneParamsSchema,
+  zoneTypeParamsSchema,
+  ZoneResponseSchema,
+  updateCoordinatesSchema,
+} from './zone.schema'
 
 export const zoneRoutes = new Elysia({ prefix: '/zone' })
-  // create zone
-  .post('/', zoneController.createZone.bind(zoneController), {
+  .post('/', (ctx) => zoneController.createZone(ctx as any), {
     body: ZoneBodySchema,
     response: ZoneResponseSchema,
     detail: {
@@ -15,188 +23,73 @@ export const zoneRoutes = new Elysia({ prefix: '/zone' })
     auth: true,
   })
 
-// export const locationRoutes = new Elysia({ prefix: '/zone' })
-//   // Rota para listar localizações com filtros
-//   .get('/', locationController.searchLocations.bind(locationController), {
-//     query: searchLocationSchema,
-//     response: {
-//       200: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         data: Type.Object({
-//           locations: Type.Array(LocationSchema),
-//           pagination: Type.Object({
-//             total: Type.Number(),
-//             limit: Type.Number(),
-//             offset: Type.Number(),
-//             pages: Type.Number(),
-//           }),
-//         }),
-//       }),
-//       400: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//       500: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//     },
-//     detail: {
-//       tags: ['Locations'],
-//       summary: 'Listar localizações',
-//       description: 'Lista localizações com filtros opcionais e paginação',
-//     },
-//   })
+  .get('/', () => zoneController.getAll(), {
+    response: getAllResponse,
+    detail: {
+      tags: ['Zone'],
+      summary: 'Get all zones',
+      description: 'Get all zones',
+    },
+    auth: true,
+  })
 
-//   // Rota para obter estatísticas
-//   .get('/stats', locationController.getLocationStats.bind(locationController), {
-//     response: {
-//       200: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         data: Type.Object({
-//           total: Type.Number(),
-//           byCategory: Type.Record(Type.String(), Type.Number()),
-//           verified: Type.Number(),
-//           averageRating: Type.Number(),
-//         }),
-//       }),
-//       500: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//     },
-//     detail: {
-//       tags: ['Locations'],
-//       summary: 'Estatísticas das localizações',
-//       description: 'Obtém estatísticas gerais das localizações',
-//     },
-//   })
+  .get('/type/:type', (ctx) => zoneController.getZoneByType(ctx as any), {
+    params: zoneTypeParamsSchema,
+    response: getAllResponse,
+    detail: {
+      tags: ['Zone'],
+      summary: 'Get zones by type',
+      description: 'Get zones by type (SAFE or DANGER)',
+    },
+    auth: true,
+  })
 
-//   // Rota para criar nova localização
-//   .post('/', locationController.createLocation.bind(locationController), {
-//     body: createLocationSchema,
-//     response: {
-//       201: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         data: LocationSchema,
-//       }),
-//       400: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//       409: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//       500: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//     },
-//     detail: {
-//       tags: ['Locations'],
-//       summary: 'Criar localização',
-//       description: 'Cria uma nova localização no sistema',
-//     },
-//   })
+  .get('/:id', (ctx) => zoneController.getZoneById(ctx as any), {
+    params: zoneParamsSchema,
+    response: ZoneResponseSchema,
+    detail: {
+      tags: ['Zone'],
+      summary: 'Get zone by ID',
+      description: 'Get a specific zone by ID',
+    },
+    auth: true,
+  })
 
-//   // Rota para obter localização por ID
-//   .get('/:id', locationController.getLocationById.bind(locationController), {
-//     params: locationParamsSchema,
-//     response: {
-//       200: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         data: LocationSchema,
-//       }),
-//       404: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//       500: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//     },
-//     detail: {
-//       tags: ['Locations'],
-//       summary: 'Obter localização por ID',
-//       description: 'Obtém uma localização específica pelo ID',
-//     },
-//   })
+  .put('/:id', (ctx) => zoneController.updateZone(ctx as any), {
+    params: zoneParamsSchema,
+    body: UpdateZoneBodySchema,
+    response: updateZoneResponseSchema,
+    detail: {
+      tags: ['Zone'],
+      summary: 'Update zone',
+      description: 'Update an existing zone',
+    },
+    auth: true,
+  })
 
-//   // Rota para atualizar localização
-//   .put('/:id', locationController.updateLocation.bind(locationController), {
-//     params: locationParamsSchema,
-//     body: updateLocationSchema,
-//     response: {
-//       200: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         data: LocationSchema,
-//       }),
-//       400: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//       404: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//       409: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//       500: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//     },
-//     detail: {
-//       tags: ['Locations'],
-//       summary: 'Atualizar localização',
-//       description: 'Atualiza uma localização existente',
-//     },
-//   })
+  .delete('/:id', (ctx) => zoneController.deleteZone(ctx as any), {
+    params: zoneParamsSchema,
+    response: ZoneResponseSchema,
+    detail: {
+      tags: ['Zone'],
+      summary: 'Delete zone',
+      description: 'Delete a zone from the system',
+    },
+    auth: true,
+  })
 
-//   // Rota para remover localização
-//   .delete('/:id', locationController.deleteLocation.bind(locationController), {
-//     params: locationParamsSchema,
-//     response: {
-//       200: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         data: Type.Null(),
-//       }),
-//       404: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//       500: Type.Object({
-//         success: Type.Boolean(),
-//         message: Type.String(),
-//         error: Type.Optional(Type.String()),
-//       }),
-//     },
-//     detail: {
-//       tags: ['Locations'],
-//       summary: 'Remover localização',
-//       description: 'Remove uma localização do sistema',
-//     },
-//   })
+  .patch(
+    '/:id/coordinates',
+    (ctx) => zoneController.updateZoneCoordinates(ctx as any),
+    {
+      params: zoneParamsSchema,
+      body: updateCoordinatesSchema,
+      response: getAllResponse,
+      detail: {
+        tags: ['Zone'],
+        summary: 'Update zone coordinates',
+        description: 'Update the coordinates of a zone',
+      },
+      auth: true,
+    }
+  )

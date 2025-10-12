@@ -18,6 +18,3 @@ export const zoneFeatureDetails = pgTable('zone_feature_details', {
 		.$onUpdate(() => new Date())
 		.notNull(),
 });
-
-export type ZoneFeatureDetails = typeof zoneFeatureDetails.$inferSelect;
-export type NewZoneFeatureDetails = typeof zoneFeatureDetails.$inferInsert;

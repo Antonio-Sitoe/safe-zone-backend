@@ -1,228 +1,225 @@
-import type { IZoneBodyRequest } from './zone.schema'
-import { HTTP_STATUS } from '../../utils/constants'
-import { zoneService, type ZoneService } from './zone.service'
-import { errorResponse, successResponse } from '../../utils/response'
+import {
+  errorResponse,
+  notFoundResponse,
+  successResponse,
+} from '../../utils/response'
+import { logger } from '@/utils/logger'
+import { Context } from 'elysia'
+import { ZoneType } from './zone.types'
+import { HTTP_STATUS } from '@/utils/constants'
+import type { IZoneBodyRequest, IUpdateZoneBodyRequest } from './zone.schema'
 import type { AuthenticatedContext } from '@/@types/auth'
-import type { Context } from 'elysia'
+import { zoneService, type ZoneService } from './zone.service'
 
 export class ZoneController {
   constructor(private readonly service: ZoneService = zoneService) {}
-  async createZone(ctx: Context) {
+  async createZone(ctx: AuthenticatedContext) {
     try {
-      const context = { ...ctx } as AuthenticatedContext
-      const body = context.body as IZoneBodyRequest
-      const userId = context?.user?.id
+      const body = ctx.body as IZoneBodyRequest
+      const userId = ctx?.user?.id
       const zoneData = { ...body, userId }
       const zone = await this.service.createZone(zoneData)
+      ctx.set.status = 201
       return successResponse(zone, 'Zona criada com sucesso')
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : 'Erro desconhecido'
 
       if (error && typeof error === 'object' && 'statusCode' in error) {
-        return errorResponse(
-          errorMessage,
-          (error as { statusCode: number }).statusCode.toString()
-        )
+        ctx.set.status = (error as { statusCode: number }).statusCode || 500
+        return errorResponse(errorMessage, errorMessage)
       }
-      return errorResponse(
-        'Erro interno do servidor',
-        HTTP_STATUS.INTERNAL_SERVER_ERROR.toString()
-      )
+      ctx.set.status = 500
+      return errorResponse('Erro interno do servidor', errorMessage)
     }
   }
 
-  // async getZoneById(ctx: Context) {
-  //   try {
-  //     const { id } = ctx.params as { id: string }
+  async getAll() {
+    try {
+      const result = await this.service.getAll()
 
-  //     logger.info('Getting location by ID', { id })
+      return successResponse(result, 'Zonas encontradas com sucesso')
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erro desconhecido'
+      logger.error('Error getting all zones', {
+        error: errorMessage,
+      })
 
-  //     const location = await locationService.getLocationById(id)
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        return errorResponse(errorMessage)
+      }
 
-  //     return successResponse(location, 'Localização encontrada com sucesso')
-  //   } catch (error: unknown) {
-  //     const errorMessage =
-  //       error instanceof Error ? error.message : 'Erro desconhecido'
-  //     logger.error('Error getting location by ID', {
-  //       error: errorMessage,
-  //       id: ctx.params?.id,
-  //     })
+      return errorResponse('Erro interno do servidor', errorMessage)
+    }
+  }
 
-  //     if (
-  //       error &&
-  //       typeof error === 'object' &&
-  //       'statusCode' in error &&
-  //       (error as { statusCode: number }).statusCode === HTTP_STATUS.NOT_FOUND
-  //     ) {
-  //       return notFoundResponse('Localização não encontrada')
-  //     }
+  async deleteZone(ctx: any) {
+    try {
+      const { id } = ctx.params
 
-  //     if (error && typeof error === 'object' && 'statusCode' in error) {
-  //       return errorResponse(
-  //         errorMessage,
-  //         (error as { statusCode: number }).statusCode
-  //       )
-  //     }
+      logger.info('Deleting location', { id })
 
-  //     return errorResponse(
-  //       'Erro interno do servidor',
-  //       HTTP_STATUS.INTERNAL_SERVER_ERROR
-  //     )
-  //   }
-  // }
+      await this.service.deleteZone(id)
 
-  // async searchLocations(ctx: Context) {
-  //   try {
-  //     const query = ctx.query as SearchLocationRequest
+      return successResponse(null, 'Localização removida com sucesso')
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erro desconhecido'
+      logger.error('Error deleting location', {
+        error: errorMessage,
+        id: ctx.params?.id,
+      })
 
-  //     logger.info('Searching locations', { query })
+      if (
+        error &&
+        typeof error === 'object' &&
+        'statusCode' in error &&
+        (error as { statusCode: number }).statusCode === HTTP_STATUS.NOT_FOUND
+      ) {
+        return notFoundResponse('Localização não encontrada')
+      }
 
-  //     const result = await locationService.searchLocations(query)
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        return errorResponse(errorMessage)
+      }
 
-  //     return successResponse(
-  //       {
-  //         locations: result.locations,
-  //         pagination: {
-  //           total: result.total,
-  //           limit: result.limit,
-  //           offset: result.offset,
-  //           pages: Math.ceil(result.total / result.limit),
-  //         },
-  //       },
-  //       'Localizações encontradas com sucesso'
-  //     )
-  //   } catch (error: unknown) {
-  //     const errorMessage =
-  //       error instanceof Error ? error.message : 'Erro desconhecido'
-  //     logger.error('Error searching locations', {
-  //       error: errorMessage,
-  //       query: ctx.query,
-  //     })
+      return errorResponse('Erro interno do servidor')
+    }
+  }
 
-  //     if (error && typeof error === 'object' && 'statusCode' in error) {
-  //       return errorResponse(
-  //         errorMessage,
-  //         (error as { statusCode: number }).statusCode
-  //       )
-  //     }
+  async updateZone(ctx: Context) {
+    try {
+      const { id } = ctx.params
+      const body = ctx.body as IUpdateZoneBodyRequest
 
-  //     return errorResponse(
-  //       'Erro interno do servidor',
-  //       HTTP_STATUS.INTERNAL_SERVER_ERROR
-  //     )
-  //   }
-  // }
+      logger.info('Updating location', { id, updates: body })
 
-  // async updateLocation(ctx: Context) {
-  //   try {
-  //     const { id } = ctx.params as LocationParams
-  //     const body = ctx.body as Partial<UpdateLocationRequest>
+      const location = await this.service.updateZone(id, body)
 
-  //     logger.info('Updating location', { id, updates: body })
+      return successResponse(location, 'Localização atualizada com sucesso')
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erro desconhecido'
+      logger.error('Error updating location', {
+        error: errorMessage,
+        id: ctx.params?.id,
+        body: ctx.body,
+      })
 
-  //     const location = await locationService.updateLocation(id, body)
+      if (
+        error &&
+        typeof error === 'object' &&
+        'statusCode' in error &&
+        (error as { statusCode: number }).statusCode === HTTP_STATUS.NOT_FOUND
+      ) {
+        return notFoundResponse('Localização não encontrada')
+      }
 
-  //     return successResponse(location, 'Localização atualizada com sucesso')
-  //   } catch (error: unknown) {
-  //     const errorMessage =
-  //       error instanceof Error ? error.message : 'Erro desconhecido'
-  //     logger.error('Error updating location', {
-  //       error: errorMessage,
-  //       id: ctx.params?.id,
-  //       body: ctx.body,
-  //     })
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        return errorResponse(errorMessage)
+      }
 
-  //     if (
-  //       error &&
-  //       typeof error === 'object' &&
-  //       'statusCode' in error &&
-  //       (error as { statusCode: number }).statusCode === HTTP_STATUS.NOT_FOUND
-  //     ) {
-  //       return notFoundResponse('Localização não encontrada')
-  //     }
+      return errorResponse('Erro interno do servidor')
+    }
+  }
 
-  //     if (error && typeof error === 'object' && 'statusCode' in error) {
-  //       return errorResponse(
-  //         errorMessage,
-  //         (error as { statusCode: number }).statusCode
-  //       )
-  //     }
+  async getZoneById(ctx: Context) {
+    try {
+      const { id } = ctx.params as { id: string }
 
-  //     return errorResponse(
-  //       'Erro interno do servidor',
-  //       HTTP_STATUS.INTERNAL_SERVER_ERROR
-  //     )
-  //   }
-  // }
+      logger.info('Getting location by ID', { id })
 
-  // async deleteLocation(ctx: Context) {
-  //   try {
-  //     const { id } = ctx.params as LocationParams
+      const location = await this.service.getZoneById(id)
 
-  //     logger.info('Deleting location', { id })
+      return successResponse(location, 'Localização encontrada com sucesso')
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erro desconhecido'
+      logger.error('Error getting location by ID', {
+        error: errorMessage,
+        id: ctx.params?.id,
+      })
 
-  //     await locationService.deleteLocation(id)
+      if (
+        error &&
+        typeof error === 'object' &&
+        'statusCode' in error &&
+        (error as { statusCode: number }).statusCode === HTTP_STATUS.NOT_FOUND
+      ) {
+        return notFoundResponse('Localização não encontrada')
+      }
 
-  //     return successResponse(null, 'Localização removida com sucesso')
-  //   } catch (error: unknown) {
-  //     const errorMessage =
-  //       error instanceof Error ? error.message : 'Erro desconhecido'
-  //     logger.error('Error deleting location', {
-  //       error: errorMessage,
-  //       id: ctx.params?.id,
-  //     })
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        return errorResponse(errorMessage)
+      }
 
-  //     if (
-  //       error &&
-  //       typeof error === 'object' &&
-  //       'statusCode' in error &&
-  //       (error as { statusCode: number }).statusCode === HTTP_STATUS.NOT_FOUND
-  //     ) {
-  //       return notFoundResponse('Localização não encontrada')
-  //     }
+      return errorResponse('Erro interno do servidor')
+    }
+  }
 
-  //     if (error && typeof error === 'object' && 'statusCode' in error) {
-  //       return errorResponse(
-  //         errorMessage,
-  //         (error as { statusCode: number }).statusCode
-  //       )
-  //     }
+  async getZoneByType(ctx: Context) {
+    try {
+      const { type } = ctx.params as { type: ZoneType }
+      logger.info('Getting zones by type', { type })
 
-  //     return errorResponse(
-  //       'Erro interno do servidor',
-  //       HTTP_STATUS.INTERNAL_SERVER_ERROR
-  //     )
-  //   }
-  // }
+      const zones = await this.service.getZoneByType(type)
 
-  // async getLocationStats(_ctx: Context) {
-  //   try {
-  //     logger.info('Getting location statistics')
+      return successResponse(zones, 'Zonas encontradas com sucesso')
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erro desconhecido'
+      logger.error('Error getting zones by type', {
+        error: errorMessage,
+      })
 
-  //     const stats = await locationService.getLocationStats()
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        ctx.set.status = (error as { statusCode: number }).statusCode || 500
+        return errorResponse(errorMessage, errorMessage)
+      }
 
-  //     return successResponse(stats, 'Estatísticas obtidas com sucesso')
-  //   } catch (error: unknown) {
-  //     const errorMessage =
-  //       error instanceof Error ? error.message : 'Erro desconhecido'
-  //     logger.error('Error getting location statistics', {
-  //       error: errorMessage,
-  //     })
+      ctx.set.status = 500
+      return errorResponse('Erro interno do servidor', errorMessage)
+    }
+  }
 
-  //     if (error && typeof error === 'object' && 'statusCode' in error) {
-  //       return errorResponse(
-  //         errorMessage,
-  //         (error as { statusCode: number }).statusCode
-  //       )
-  //     }
+  async updateZoneCoordinates(ctx: Context) {
+    try {
+      const { id } = ctx.params as { id: string }
+      const coordinates = ctx.body as { latitude: number; longitude: number }
 
-  //     return errorResponse(
-  //       'Erro interno do servidor',
-  //       HTTP_STATUS.INTERNAL_SERVER_ERROR
-  //     )
-  //   }
-  // }
+      logger.info('Updating zone coordinates', { id, coordinates })
+
+      const zones = await this.service.updateZoneCoordinates(id, coordinates)
+
+      return successResponse(zones, 'Coordenadas atualizadas com sucesso')
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erro desconhecido'
+      logger.error('Error updating zone coordinates', {
+        error: errorMessage,
+        id: ctx.params?.id,
+      })
+
+      if (
+        error &&
+        typeof error === 'object' &&
+        'statusCode' in error &&
+        (error as { statusCode: number }).statusCode === HTTP_STATUS.NOT_FOUND
+      ) {
+        ctx.set.status = 404
+        return notFoundResponse('Zona não encontrada')
+      }
+
+      if (error && typeof error === 'object' && 'statusCode' in error) {
+        ctx.set.status = (error as { statusCode: number }).statusCode || 500
+        return errorResponse(errorMessage, errorMessage)
+      }
+
+      ctx.set.status = 500
+      return errorResponse('Erro interno do servidor', errorMessage)
+    }
+  }
 }
 
 export const zoneController = new ZoneController()
