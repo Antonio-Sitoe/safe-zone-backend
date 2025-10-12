@@ -16,10 +16,10 @@ export const GroupResponseSchema = z.object({
   contacts: z
     .array(
       z.object({
-        id: z.string().uuid(),
+        id: z.uuid(),
         name: z.string(),
         phone: z.string(),
-        groupId: z.string().uuid(),
+        groupId: z.uuid(),
       })
     )
     .optional(),
