@@ -24,8 +24,22 @@ Primeiro, crie os serviços necessários no Coolify:
    - **Username**: safezone_user
    - **Password**: [gerar senha segura]
 4. Em **Advanced Settings**, adicione:
-   - **Image**: `postgis/postgis:17-master` (para suporte PostGIS)
+   - **Image**: `postgis/postgis:17-master` ⚠️ **IMPORTANTE: Use essa imagem para suporte PostGIS/Geolocalização**
 5. Deploy o banco
+6. **Após o deploy**, habilite a extensão PostGIS:
+   - Acesse o **Terminal** do container PostgreSQL no Coolify
+   - Execute os comandos:
+
+   ```bash
+   psql -U safezone_user -d safe_zone_db -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+   psql -U safezone_user -d safe_zone_db -c "CREATE EXTENSION IF NOT EXISTS postgis_topology;"
+   ```
+
+   - Verifique se está instalado:
+
+   ```bash
+   psql -U safezone_user -d safe_zone_db -c "SELECT PostGIS_version();"
+   ```
 
 #### b) Redis
 
@@ -91,7 +105,9 @@ LOG_FILE=logs/app.log
 
 ### 6. Executar Migrations
 
-Após o primeiro deploy, você precisa executar as migrations:
+⚠️ **IMPORTANTE**: Antes de executar as migrations, **certifique-se de que o PostGIS está habilitado** (passo 1.a.6)!
+
+Após o primeiro deploy e habilitar PostGIS, você precisa executar as migrations:
 
 **Opção 1: Via Terminal do Coolify**
 
@@ -153,6 +169,27 @@ Configure backups automáticos no Coolify:
 - Confirme que o PostgreSQL está rodando
 - Verifique logs do container
 
+### Erro com PostGIS/Geolocalização
+
+**Problema**: Erros tipo `extension "postgis" does not exist` ou `type geography not found`
+
+**Solução**:
+
+1. Confirme que está usando a imagem `postgis/postgis:17-master`
+2. Acesse o terminal do PostgreSQL no Coolify
+3. Habilite as extensões:
+
+```bash
+psql -U safezone_user -d safe_zone_db -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+psql -U safezone_user -d safe_zone_db -c "CREATE EXTENSION IF NOT EXISTS postgis_topology;"
+```
+
+4. Verifique a instalação:
+
+```bash
+psql -U safezone_user -d safe_zone_db -c "SELECT PostGIS_version();"
+```
+
 ### App não inicia
 
 - Verifique variáveis de ambiente
@@ -164,6 +201,7 @@ Configure backups automáticos no Coolify:
 - Execute manualmente via terminal do Coolify
 - Verifique permissões do usuário do banco
 - Confirme que o banco está acessível
+- **Para PostGIS**: Certifique-se de que a extensão está habilitada ANTES de rodar migrations
 
 ## 📚 Recursos Úteis
 

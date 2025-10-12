@@ -29,6 +29,9 @@ COPY --from=prerelease /app/package.json .
 COPY --from=prerelease /app/tsconfig.json .
 COPY --from=prerelease /app/drizzle.config.ts .
 
+# Criar e copiar pasta public para arquivos estáticos
+COPY --from=prerelease /app/public ./public
+
 # Criar usuário não-root para segurança
 USER bun
 
