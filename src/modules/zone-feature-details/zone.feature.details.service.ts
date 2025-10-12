@@ -1,8 +1,9 @@
-import { IZoneFeatureDetails } from '../zone/zone.schema';
 import {
-	zoneFeatureDetailsRepository,
 	type ZoneFeatureDetailsRepository,
+	zoneFeatureDetailsRepository,
 } from './zone.feature.details.repository';
+
+import { IZoneFeatureDetails } from '../zone/zone.schema';
 
 export class ZoneFeatureDetailsService {
 	constructor(
@@ -15,6 +16,17 @@ export class ZoneFeatureDetailsService {
 		featureDetails: IZoneFeatureDetails,
 	) {
 		return this.repository.create(zoneId, {
+			...featureDetails,
+			type,
+		});
+	}
+
+	async update(
+		zoneId: string,
+		type: 'SAFE' | 'DANGER',
+		featureDetails: IZoneFeatureDetails,
+	) {
+		return this.repository.update(zoneId, {
 			...featureDetails,
 			type,
 		});
