@@ -5,8 +5,14 @@ import { GroupService } from './community.service'
 export class GroupController {
   constructor(private readonly service: GroupService) {}
 
-  async createGroup({ body }: { body: CreateGroupInput }) {
-    return await this.service.create(body)
+  async createGroup({
+    params,
+    body,
+  }: {
+    params: { userId: string }
+    body: CreateGroupInput
+  }) {
+    return await this.service.create(params.userId, body)
   }
   async createContact({
     params,
@@ -18,8 +24,11 @@ export class GroupController {
     return await this.service.createContact(params.groupId, body)
   }
 
-  async getGroups() {
-    return await this.service.findAll()
+  async getGroups({ params }: { params: { userId: string } }) {
+    return await this.service.findAll(params.userId)
+  }
+  async getGroupsByUserId({ params }: { params: { userId: string } }) {
+    return await this.service.findGroupsByUserId(params.userId)
   }
 
   async getGroupById({ params }: { params: { id: string } }) {

@@ -1,10 +1,10 @@
 import { db } from '@/db/db'
 import { groups, groupContacts } from '@/db/schemas/community'
-import { eq } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 
 export class GroupRepository {
-  async createGroup(name: string) {
-    const [group] = await db.insert(groups).values({ name }).returning()
+  async createGroup(userId: string, name: string) {
+    const [group] = await db.insert(groups).values({ name, userId }).returning()
     return group
   }
 
@@ -22,10 +22,32 @@ export class GroupRepository {
       .returning()
   }
 
-  async findAll() {
-    return db.select().from(groups)
+  async findAll(userId: string) {
+    const groupsWithContacts = await db
+      .select({
+        id: sql`g.id`,
+        name: sql`g.name`,
+        userId: sql`g.user_id`,
+        contactsTotal: sql`COUNT(gc.id)`,
+        contacts: sql`COALESCE(
+        json_agg(json_build_object(
+          'id', gc.id,
+          'name', gc.name,
+          'phone', gc.phone
+        )) FILTER (WHERE gc.id IS NOT NULL), '[]'
+      )`,
+      })
+      .from(sql`groups g LEFT JOIN group_contacts gc ON gc.group_id = g.id`)
+      .where(sql`g.user_id = ${userId}`)
+      .groupBy(sql`g.id`)
+      .execute()
+
+    return groupsWithContacts
   }
 
+  async findGroupsByUserId(userId: string) {
+    return await db.select().from(groups).where(eq(groups.userId, userId))
+  }
   async findById(id: string) {
     const [group] = await db.select().from(groups).where(eq(groups.id, id))
     return group || null

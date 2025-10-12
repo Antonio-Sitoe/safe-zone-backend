@@ -14,7 +14,7 @@ const service = new GroupService(repository)
 const controller = new GroupController(service)
 
 export const communityRoutes = new Elysia({ prefix: '/groups' })
-  .post('/', controller.createGroup.bind(controller), {
+  .post('/:userId', controller.createGroup.bind(controller), {
     body: CreateGroupBodySchema,
     response: GroupResponseSchema,
     detail: {
@@ -23,7 +23,7 @@ export const communityRoutes = new Elysia({ prefix: '/groups' })
       description: 'Cria um novo grupo com contatos associados',
     },
   })
-  .post('/:groupId', controller.createContact.bind(controller), {
+  .post('/contact/:groupId', controller.createContact.bind(controller), {
     body: ContactSchema,
     response: { message: 'Contacto criado com sucesso' },
     detail: {
@@ -33,7 +33,14 @@ export const communityRoutes = new Elysia({ prefix: '/groups' })
     },
   })
 
-  .get('/', controller.getGroups.bind(controller), {
+  .get('/:userId', controller.getGroups.bind(controller), {
+    detail: {
+      tags: ['Groups'],
+      summary: 'Get Groups',
+      description: 'Lista todos os grupos com seus contatos',
+    },
+  })
+  .get('/user/:userId', controller.getGroupsByUserId.bind(controller), {
     detail: {
       tags: ['Groups'],
       summary: 'Get Groups',
@@ -41,7 +48,7 @@ export const communityRoutes = new Elysia({ prefix: '/groups' })
     },
   })
 
-  .get('/:id', controller.getGroupById.bind(controller), {
+  .get('/group/:id', controller.getGroupById.bind(controller), {
     detail: {
       tags: ['Groups'],
       summary: 'Get Group by ID',
