@@ -91,23 +91,23 @@
 
 ### 6.1 Adicionar Contato
 
-- [ ] Campos: Nome, Número, Tipo (Família, Amigo, Trabalho).
-- [ ] Validações: número único.
-- [ ] Opções: Guardar, Fechar.
-- [ ] Mensagem: 'Contato adicionado com sucesso.'
+- [x ] Campos: Nome, Número, Tipo (Família, Amigo, Trabalho).
+- [x ] Validações: número único.
+- [ x] Opções: Guardar, Fechar.
+- [ x] Mensagem: 'Contato adicionado com sucesso.'
 
 ### 6.2 Criar Grupo
 
-- [ ] Campos: Nome, Participantes (números).
-- [ ] Permitir múltiplos participantes.
-- [ ] Validação: participantes devem estar cadastrados ou novos números.
-- [ ] Mensagem: 'Grupo criado com sucesso.'
+- [x] Campos: Nome, Participantes (números).
+- [x ] Permitir múltiplos participantes.
+- [x ] Validação: participantes devem estar cadastrados ou novos números.
+- [x ] Mensagem: 'Grupo criado com sucesso.'
 
 ### Comunidade de Apoio
 
-- [ ] Contatos duplicados não permitidos.
-- [ ] Grupos com múltiplos participantes.
-- [ ] Usuária pode editar ou excluir contatos e grupos.
+- [x ] Contatos duplicados não permitidos.
+- [ x] Grupos com múltiplos participantes.
+- [x ] Usuária pode editar ou excluir contatos e grupos.
 
 ### 6.3 Disparo de Alertas
 
