@@ -1,3 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS postgis;--> statement-breakpoint
 CREATE TYPE "public"."media_type" AS ENUM('image', 'video');--> statement-breakpoint
 CREATE TYPE "public"."zone_type" AS ENUM('SAFE', 'DANGER');--> statement-breakpoint
 CREATE TABLE "accounts" (
