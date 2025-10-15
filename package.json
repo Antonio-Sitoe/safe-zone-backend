@@ -5,8 +5,8 @@
   "main": "src/app.ts",
   "scripts": {
     "dev": "bun run --watch src/app.ts",
-    "start": "bun run src/app.ts && bun run --watch src/lib/email/worker.ts",
-    "build": "bun build src/app.ts --outdir dist --target bun",
+    "start": "bun run src/app.ts",
+    "build": "bun build src/**/*.ts --outdir dist --target bun",
     "worker": "bun run --watch src/lib/email/worker.ts",
     "test": "bun test",
     "lint": "biome check src/",
