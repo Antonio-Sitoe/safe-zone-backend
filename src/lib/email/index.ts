@@ -10,11 +10,6 @@ export type {
 	OTPEmailData,
 } from './types';
 
-export async function sendOTP(
-	email: string,
-	otp: string,
-	type: EmailType,
-	retries = 3,
-) {
-	return emailService.sendOTP({ email, otp, type }, retries);
+export async function sendOTP(email: string, otp: string, type: EmailType) {
+	return emailService.sendOTP({ email, otp, type });
 }

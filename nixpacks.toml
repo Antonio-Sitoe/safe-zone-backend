@@ -17,4 +17,4 @@ cmds = [
 ]
 
 [start]
-cmd = "export PATH=\"$HOME/.bun/bin:$PATH\" && bun run start & bun run worker"
+cmd = "export PATH=\"$HOME/.bun/bin:$PATH\" && bun run start"

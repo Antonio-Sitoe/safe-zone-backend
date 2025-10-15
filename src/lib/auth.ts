@@ -2,7 +2,7 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { bearer, emailOTP, openAPI } from 'better-auth/plugins';
 import { db } from '@/db/db';
-import { emailQueue } from './email/config';
+import { emailService } from './email/service';
 
 export const auth = betterAuth({
 	basePath: '/auth',
@@ -13,7 +13,7 @@ export const auth = betterAuth({
 		emailOTP({
 			otpLength: 4,
 			async sendVerificationOTP({ email, otp, type }) {
-				await emailQueue.add('sendOTP', { email, otp, type });
+				await emailService.sendOTP({ email, otp, type });
 			},
 		}),
 	],
