@@ -1,7 +1,7 @@
 import { zones, zoneTypeEnum } from '@/db/schemas/zone';
-import { IZoneBodyRequest } from './zone.schema';
 import { NewZoneFeatureDetails } from '../zone-feature-details/zone.feature.details.types';
 import { Coordinates } from './zone.geography';
+import { IZoneBodyRequest } from './zone.schema';
 
 export interface IZoneRepository {
 	create(zone: IZoneBodyRequest): Promise<Zone>;

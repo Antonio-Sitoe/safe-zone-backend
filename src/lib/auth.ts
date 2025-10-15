@@ -1,6 +1,6 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { emailOTP, openAPI, bearer } from 'better-auth/plugins';
+import { bearer, emailOTP, openAPI } from 'better-auth/plugins';
 import { db } from '@/db/db';
 import { emailQueue } from './email/config';
 

@@ -1,15 +1,15 @@
+import { Context } from 'elysia';
+import type { AuthenticatedContext } from '@/@types/auth';
+import { HTTP_STATUS } from '@/utils/constants';
+import { logger } from '@/utils/logger';
 import {
 	errorResponse,
 	notFoundResponse,
 	successResponse,
 } from '../../utils/response';
-import { logger } from '@/utils/logger';
-import { Context } from 'elysia';
+import type { IUpdateZoneBodyRequest, IZoneBodyRequest } from './zone.schema';
+import { type ZoneService, zoneService } from './zone.service';
 import { ZoneType } from './zone.types';
-import { HTTP_STATUS } from '@/utils/constants';
-import type { IZoneBodyRequest, IUpdateZoneBodyRequest } from './zone.schema';
-import type { AuthenticatedContext } from '@/@types/auth';
-import { zoneService, type ZoneService } from './zone.service';
 
 export class ZoneController {
 	constructor(private readonly service: ZoneService = zoneService) {}

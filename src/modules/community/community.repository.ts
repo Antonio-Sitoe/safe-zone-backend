@@ -1,6 +1,6 @@
-import { db } from '@/db/db';
-import { groups, groupContacts } from '@/db/schemas/community';
 import { eq, sql } from 'drizzle-orm';
+import { db } from '@/db/db';
+import { groupContacts, groups } from '@/db/schemas/community';
 
 export class GroupRepository {
 	async createGroup(userId: string, name: string) {

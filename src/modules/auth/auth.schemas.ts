@@ -1,5 +1,5 @@
-import { ApiResponseSchema } from '@/utils/response';
 import { z } from 'zod';
+import { ApiResponseSchema } from '@/utils/response';
 
 export const LoginRequestSchema = z.object({
 	email: z.email('Email inválido'),

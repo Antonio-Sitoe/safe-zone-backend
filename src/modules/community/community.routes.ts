@@ -1,13 +1,12 @@
 import { Elysia } from 'elysia';
-import { GroupRepository } from './community.repository';
-import { GroupService } from './community.service';
 import { GroupController } from './community.controller';
-
+import { GroupRepository } from './community.repository';
 import {
 	ContactSchema,
 	CreateGroupBodySchema,
 	GroupResponseSchema,
 } from './community.schema';
+import { GroupService } from './community.service';
 
 const repository = new GroupRepository();
 const service = new GroupService(repository);

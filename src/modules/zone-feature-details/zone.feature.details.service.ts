@@ -1,9 +1,8 @@
+import { IZoneFeatureDetails } from '../zone/zone.schema';
 import {
 	type ZoneFeatureDetailsRepository,
 	zoneFeatureDetailsRepository,
 } from './zone.feature.details.repository';
-
-import { IZoneFeatureDetails } from '../zone/zone.schema';
 
 export class ZoneFeatureDetailsService {
 	constructor(

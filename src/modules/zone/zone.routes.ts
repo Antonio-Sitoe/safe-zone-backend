@@ -2,13 +2,13 @@ import { Elysia } from 'elysia';
 import { zoneController } from './zone.controller';
 import {
 	getAllResponse,
+	UpdateZoneBodySchema,
+	updateCoordinatesSchema,
 	updateZoneResponseSchema,
 	ZoneBodySchema,
-	UpdateZoneBodySchema,
+	ZoneResponseSchema,
 	zoneParamsSchema,
 	zoneTypeParamsSchema,
-	ZoneResponseSchema,
-	updateCoordinatesSchema,
 } from './zone.schema';
 
 export const zoneRoutes = new Elysia({ prefix: '/zone' })

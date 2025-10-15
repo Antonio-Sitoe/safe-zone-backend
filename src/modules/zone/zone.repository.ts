@@ -1,10 +1,10 @@
 import { desc, eq, sql } from 'drizzle-orm';
+import { zoneFeatureDetails } from '@/db/schemas/zone-details';
 import { db } from '../../db/db';
 import { zones } from '../../db/schemas/zone';
 import { type Coordinates, createPointFromCoords } from './zone.geography';
-import type { IZoneRepository, Zone } from './zone.types';
 import type { IZoneWithUserIdBodyRequest } from './zone.schema';
-import { zoneFeatureDetails } from '@/db/schemas/zone-details';
+import type { IZoneRepository, Zone } from './zone.types';
 
 export class ZoneRepository implements IZoneRepository {
 	constructor(private readonly database: typeof db = db) {}

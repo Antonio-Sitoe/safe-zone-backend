@@ -1,5 +1,5 @@
-import { pgTable, varchar, integer, uuid } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
+import { integer, pgTable, uuid, varchar } from 'drizzle-orm/pg-core';
 import { users } from './users';
 
 export const groups = pgTable('groups', {

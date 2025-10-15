@@ -1,15 +1,15 @@
-import { env } from './lib/env';
 import { Elysia } from 'elysia';
-import { health } from '@/modules/health';
-import { logger } from './utils/logger';
 import { authRoutes } from '@/modules/auth';
+import { health } from '@/modules/health';
 import { zoneRoutes } from '@/modules/zone';
-import { errorHandler } from './middleware/errorHandler';
-import { communityRoutes } from './modules/community/community.routes';
-import { betterAuthPlugin } from './middleware/better-auth';
 import { corsPlugin as cors } from './lib/cors';
+import { env } from './lib/env';
 import { openapiConfig as openapi } from './lib/openapi';
 import { staticFilesPlugin as staticFiles } from './lib/static-files';
+import { betterAuthPlugin } from './middleware/better-auth';
+import { errorHandler } from './middleware/errorHandler';
+import { communityRoutes } from './modules/community/community.routes';
+import { logger } from './utils/logger';
 
 export const app = new Elysia()
 	.use(cors)
