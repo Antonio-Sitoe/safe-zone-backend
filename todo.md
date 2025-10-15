@@ -40,6 +40,12 @@
 - [ ] Fluxo para quando a usuária esquecer a senha.
 - [ ] Envio de código por email/telefone para redefinição.
 
+### 2. Gestão de Perfil da Usuária
+
+- [ ] Editar dados pessoais (nome, telefone, email).
+- [ ] Alterar senha.
+- [ ] Excluir conta.
+
 ## 3. Criar Zona Segura
 
 - [x] Campos obrigatórios: Localização (GPS/manual), Data, Hora, Descrição.
@@ -70,8 +76,15 @@
 - [x] Localização, data e hora válidos.
 - [x] Zona exibida no mapa imediatamente.
 - [ ] RN05 – Áreas críticas são geradas com ≥10 relatos.
+- [ ] O mapa deve carregar em até 10 segundos.
+- [ ] 10+ usuárias → Área marcada como Crítica.
 
 ---
+
+### 3. Gestão das Zonas
+
+- [ ] Usuária pode editar ou excluir uma zona que ela mesma criou.
+- [ ] Definir como tratar inconsistências (ex: várias usuárias marcam locais diferentes no mesmo ponto).
 
 ## 2. Mapa com Localização Atual
 
@@ -84,6 +97,7 @@
 - [ ] Sempre centralizado na localização atual.
 - [ ] Exibe ícones diferentes para zonas.
 - [ ] Notificação em tempo real em zonas perigosas.
+- [ ] O mapa deve carregar em até 10 segundos.
 
 ---
 
@@ -91,23 +105,26 @@
 
 ### 6.1 Adicionar Contato
 
-- [x ] Campos: Nome, Número, Tipo (Família, Amigo, Trabalho).
-- [x ] Validações: número único.
-- [ x] Opções: Guardar, Fechar.
-- [ x] Mensagem: 'Contato adicionado com sucesso.'
+- [x] Campos: Nome, Número, Tipo (Família, Amigo, Trabalho).
+- [x] Validações: número único.
+- [x] Opções: Guardar, Fechar.
+- [x] Mensagem: 'Contato adicionado com sucesso.'
 
 ### 6.2 Criar Grupo
 
 - [x] Campos: Nome, Participantes (números).
-- [x ] Permitir múltiplos participantes.
-- [x ] Validação: participantes devem estar cadastrados ou novos números.
-- [x ] Mensagem: 'Grupo criado com sucesso.'
+- [x] Permitir múltiplos participantes.
+- [x] Validação: participantes devem estar cadastrados ou novos números.
+- [x] Mensagem: 'Grupo criado com sucesso.'
 
 ### Comunidade de Apoio
 
-- [x ] Contatos duplicados não permitidos.
-- [ x] Grupos com múltiplos participantes.
-- [x ] Usuária pode editar ou excluir contatos e grupos.
+- [x] Contatos duplicados não permitidos.
+- [x] Grupos com múltiplos participantes.
+- [x] Usuária pode editar ou excluir contatos e grupos.
+- [ ] RN03 – Contatos e grupos podem ser editados/excluídos.
+
+=====================================================================================
 
 ### 6.3 Disparo de Alertas
 
@@ -127,23 +144,7 @@
 
 - [ ] RN01 – Apenas contatos confirmados recebem alertas.
 - [ ] RN02 – Apenas usuárias cadastradas podem disparar alertas.
-- [ ] RN03 – Contatos e grupos podem ser editados/excluídos.
 - [ ] RN04 – Cada alerta é registrado e vinculado ao mapa.
-
----
-
-## 8. Critérios de Aceitação
-
-### 2. Gestão de Perfil da Usuária
-
-- [ ] Editar dados pessoais (nome, telefone, email).
-- [ ] Alterar senha.
-- [ ] Excluir conta.
-
-### 3. Gestão das Zonas
-
-- [ ] Usuária pode editar ou excluir uma zona que ela mesma criou.
-- [ ] Definir como tratar inconsistências (ex: várias usuárias marcam locais diferentes no mesmo ponto).
 
 ### 4. Configurações de Notificações
 
@@ -158,8 +159,4 @@
 
 - [ ] Usuária pode ver histórico de seus alertas disparados.
 - [ ] Histórico de zonas visualizadas ou criadas.
-
-### 7. Critérios de Performance (para os devs)
-
-- [ ] O mapa deve carregar em até 10 segundos.
 - [ ] Notificações devem ser enviadas em até 10 segundos após disparo.
