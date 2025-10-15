@@ -1,13 +1,20 @@
-providers = ["bun"]
+providers = ["nodejs"]
 
 [phases.setup]
-nixPkgs = ["bun"]
+nixPkgs = ["nodejs", "curl"]
 
 [phases.install]
-cmds = ["bun install --frozen-lockfile"]
+cmds = [
+  "curl -fsSL https://bun.sh/install | bash",
+  "export PATH=\"$HOME/.bun/bin:$PATH\"",
+  "bun install --frozen-lockfile"
+]
 
 [phases.build]
-cmds = ["bun run build"]
+cmds = [
+  "export PATH=\"$HOME/.bun/bin:$PATH\"",
+  "bun run build"
+]
 
 [start]
-cmd = "bun run start & bun run worker"
+cmd = "export PATH=\"$HOME/.bun/bin:$PATH\" && bun run start & bun run worker"
