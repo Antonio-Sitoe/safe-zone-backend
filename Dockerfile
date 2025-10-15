@@ -1,5 +1,5 @@
 # Use a imagem oficial do Bun
-FROM oven/bun:1 AS base
+FROM oven/bun:1.3.0 AS base
 WORKDIR /app
 
 # Instalar dependências de produção
