@@ -42,6 +42,6 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD bun run --bun -e "fetch('http://localhost:3000/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"
 
-# Comando de start
-ENTRYPOINT ["bun", "run", "src/app.ts"]
+# Comando de start - executa servidor e worker em paralelo
+ENTRYPOINT ["sh", "-c", "bun run src/app.ts & bun run src/lib/email/worker.ts & wait"]
 
