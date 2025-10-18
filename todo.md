@@ -75,9 +75,9 @@
 - [x] Campos obrigatórios preenchidos.
 - [x] Localização, data e hora válidos.
 - [x] Zona exibida no mapa imediatamente.
-- [ ] RN05 – Áreas críticas são geradas com ≥10 relatos.
+- [x] RN05 – Áreas críticas são geradas com ≥10 relatos.
 - [ ] O mapa deve carregar em até 10 segundos.
-- [ ] 10+ usuárias → Área marcada como Crítica.
+- [x] 10+ usuárias → Área marcada como Crítica.
 
 ---
 

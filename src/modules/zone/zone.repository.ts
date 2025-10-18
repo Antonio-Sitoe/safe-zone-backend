@@ -74,25 +74,30 @@ export class ZoneRepository implements IZoneRepository {
   }
 
   async getAll(lat: number, long: number, type?: 'SAFE' | 'DANGER') {
-    const baseQuery = sql`
-    SELECT DISTINCT(id), slug, type, latitude, longitude,geom,
-           ST_Distance(
-             geom::geography,
-             ST_SetSRID(ST_MakePoint(${long}, ${lat}), 4326)::geography
-           ) AS distance_meters
-    FROM zones
-    WHERE ST_DWithin(
-          geom::geography,
-          ST_SetSRID(ST_MakePoint(${long}, ${lat}), 4326)::geography,
-          1000
+    const query = sql`
+    WITH ranked AS (
+      SELECT *,
+             ST_Distance(
+               geom::geography,
+               ST_SetSRID(ST_MakePoint(${long}, ${lat}), 4326)::geography
+             ) AS distance_meters,
+             ROW_NUMBER() OVER (
+               PARTITION BY "userId" 
+               ORDER BY ST_Distance(
+                 geom::geography,
+                 ST_SetSRID(ST_MakePoint(${long}, ${lat}), 4326)::geography
+               )
+             ) AS rn
+      FROM zones
+      ${type ? sql`WHERE type = ${type}` : sql``}
     )
+    SELECT *
+    FROM ranked
+    WHERE rn = 1
+    ORDER BY distance_meters ASC
   `
 
-    const typeCondition = type ? sql`AND type = ${type}` : sql``
-
-    const finalQuery = sql`${baseQuery} ${typeCondition} ORDER BY distance_meters ASC`
-
-    const result = await db.execute(finalQuery)
+    const result = await db.execute(query)
     return result
   }
 
