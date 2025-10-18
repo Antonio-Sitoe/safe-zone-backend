@@ -1,4 +1,4 @@
-import { Elysia, env } from 'elysia'
+import { Elysia } from 'elysia'
 import { authRoutes } from '@/modules/auth'
 import { health } from '@/modules/health'
 import { zoneRoutes } from '@/modules/zone'
