@@ -1,9 +1,22 @@
 FROM oven/bun:1.3.0
 
+# Instalar dependências do sistema necessárias para compilar módulos nativos
+RUN apt-get update && apt-get install -y \
+  python3 \
+  python3-pip \
+  build-essential \
+  && rm -rf /var/lib/apt/lists/*
+
+# Configurar Python para node-gyp
+ENV PYTHON=/usr/bin/python3
+
 WORKDIR /app
 
-COPY package.json .
-RUN bun install
+# Copiar arquivos de dependências primeiro para melhor cache
+COPY package.json bun.lockb* ./
+
+# Instalar dependências
+RUN bun install --frozen-lockfile
 
 COPY . .
 
