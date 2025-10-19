@@ -6,7 +6,7 @@ import { sendOTP } from './email'
 
 export const auth = betterAuth({
   basePath: '/auth',
-  trustedOrigins: ['https://cbf4dbc024b2.ngrok-free.app'],
+  trustedOrigins: ['*'],
   plugins: [
     openAPI(),
     bearer(),
