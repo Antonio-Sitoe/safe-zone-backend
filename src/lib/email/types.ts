@@ -1,22 +1,20 @@
 export interface EmailConfig {
-	host: string;
-	port: number;
-	secure: boolean;
-	user: string;
-	pass: string;
+  from: string
+  apiKey: string
 }
 
 export interface EmailMessage {
-	to: string;
-	subject: string;
-	text: string;
-	html: string;
+  to: string | string[]
+  subject: string
+  text?: string
+  html: string
+  from?: string
 }
 
-export type EmailType = 'sign-in' | 'email-verification' | 'forget-password';
+export type EmailType = 'sign-in' | 'email-verification' | 'forget-password'
 
 export interface OTPEmailData {
-	email: string;
-	otp: string;
-	type: EmailType;
+  email: string
+  otp: string
+  type: EmailType
 }

@@ -1,7 +1,6 @@
 services:
   postgres:
     image: postgis/postgis:17-master
-    container_name: safe-zone-postgres
     environment:
       POSTGRES_DB: safe_zone_db
       POSTGRES_USER: safezone_user
@@ -10,20 +9,6 @@ services:
       - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U safezone_user -d safe_zone_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-  redis:
-    image: redis:6-alpine
-    container_name: safe-zone-redis
-    restart: unless-stopped
-    ports:
-      - "6380:6379"
-    volumes:
-      - redis_data:/data
 
 volumes:
   postgres_data:
-  redis_data:

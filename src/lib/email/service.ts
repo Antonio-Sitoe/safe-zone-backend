@@ -1,7 +1,6 @@
-import { env } from '../env'
 import { render } from '@react-email/render'
 import { logger } from '@/utils/logger'
-import { transporter } from './config'
+import { resend, emailConfig } from './config'
 import { EmailOTPTemplate } from './template'
 import type { OTPEmailData } from './types'
 
@@ -16,14 +15,23 @@ export class EmailService {
         return { success: true, messageId: `dev-${Date.now()}` }
       }
 
-      const info = await transporter.sendMail({
-        from: `"Safe Zone" <${env.EMAIL_USER}>`,
-        to: email,
+      const { data, error } = await resend.emails.send({
+        from: emailConfig.from,
+        to: [email],
         subject,
         html,
       })
 
-      return { success: true, messageId: info.messageId }
+      if (error) {
+        logger.error('Erro ao enviar email OTP via Resend', {
+          error,
+          email,
+          type,
+        })
+        throw new Error('Falha ao enviar email de verificação')
+      }
+
+      return { success: true, messageId: data?.id }
     } catch (error) {
       logger.error('Erro ao enviar email OTP', { error, email, type })
       throw new Error('Falha ao enviar email de verificação')

@@ -1,12 +1,9 @@
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
 import { env } from '@/lib/env'
 
-export const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465, // Porta SSL
-  secure: true, // SSL = true na 465
-  auth: {
-    user: env.EMAIL_USER,
-    pass: env.EMAIL_PASSWORD, // senha de app (não senha normal da conta)
-  },
-})
+export const resend = new Resend(env.RESEND_API_KEY)
+
+export const emailConfig = {
+  from: env.EMAIL_FROM,
+  apiKey: env.RESEND_API_KEY,
+}
