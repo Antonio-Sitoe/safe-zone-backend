@@ -44,7 +44,6 @@ export const zoneRoutes = new Elysia({ prefix: '/zone' })
 
   .get('/type/:type', (ctx) => zoneController.getZoneByType(ctx as any), {
     params: zoneTypeParamsSchema,
-    response: getAllResponse,
     detail: {
       tags: ['Zone'],
       summary: 'Get zones by type',

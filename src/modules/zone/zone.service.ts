@@ -33,11 +33,7 @@ export class ZoneService {
 
   async getZoneByType(type: 'SAFE' | 'DANGER') {
     const zones = await this.zoneRepository.getByType(type)
-    return zones.map((item) => {
-      return {
-        item,
-      }
-    })
+    return zones
   }
 
   async createZone(data: IZoneWithUserIdBodyRequest) {
