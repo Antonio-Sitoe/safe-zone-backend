@@ -1,4 +1,5 @@
 import { betterAuth } from 'better-auth'
+import { expo } from '@better-auth/expo'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { bearer, emailOTP, openAPI } from 'better-auth/plugins'
 import { db } from '@/db/db'
@@ -8,6 +9,7 @@ export const auth = betterAuth({
   basePath: '/auth',
   trustedOrigins: ['*'],
   plugins: [
+    expo(),
     openAPI(),
     bearer(),
     emailOTP({
