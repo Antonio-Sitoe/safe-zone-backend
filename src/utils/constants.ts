@@ -1,6 +1,3 @@
-/**
- * Constantes HTTP
- */
 export const HTTP_STATUS = {
 	OK: 200,
 	CREATED: 201,
@@ -14,9 +11,6 @@ export const HTTP_STATUS = {
 	INTERNAL_SERVER_ERROR: 500,
 } as const;
 
-/**
- * Categorias de localização
- */
 export const LOCATION_CATEGORIES = {
 	SAFE: 'safe',
 	UNSAFE: 'unsafe',
@@ -24,18 +18,12 @@ export const LOCATION_CATEGORIES = {
 	EMERGENCY: 'emergency',
 } as const;
 
-/**
- * Roles de usuário
- */
 export const USER_ROLES = {
 	ADMIN: 'admin',
 	USER: 'user',
 	MODERATOR: 'moderator',
 } as const;
 
-/**
- * Regras de validação
- */
 export const VALIDATION_RULES = {
 	NAME_MIN_LENGTH: 2,
 	NAME_MAX_LENGTH: 100,

@@ -1,28 +1,28 @@
-import { zones, zoneTypeEnum } from '@/db/schemas/zone'
-import { NewZoneFeatureDetails } from '../zone-feature-details/zone.feature.details.types'
-import { Coordinates } from './zone.geography'
-import { IZoneBodyRequest } from './zone.schema'
+import { zones, zoneTypeEnum } from '@/db/schemas/zone';
+import { NewZoneFeatureDetails } from '../zone-feature-details/zone.feature.details.types';
+import { Coordinates } from './zone.geography';
+import { IZoneBodyRequest } from './zone.schema';
 
 export interface IZoneRepository {
-  create(zone: IZoneBodyRequest): Promise<Zone>
-  update(id: string, zone: Zone): Promise<Zone>
-  getAll(lat: number, long: number, type?: 'SAFE' | 'DANGER'): Promise<any>
-  getByType(type: 'SAFE' | 'DANGER'): Promise<Zone[]>
-  delete(id: string): Promise<void>
-  getById(id: string): Promise<Zone>
-  getByUserId(userId: string): Promise<Zone[]>
+	create(zone: IZoneBodyRequest): Promise<Zone>;
+	update(id: string, zone: Zone): Promise<Zone>;
+	getAll(lat: number, long: number, type?: 'SAFE' | 'DANGER'): Promise<any>;
+	getByType(type: 'SAFE' | 'DANGER'): Promise<Zone[]>;
+	delete(id: string): Promise<void>;
+	getById(id: string): Promise<Zone>;
+	getByUserId(userId: string): Promise<Zone[]>;
 }
 
-export type Zone = typeof zones.$inferSelect
-export type NewZone = typeof zones.$inferInsert
-export type ZoneType = (typeof zoneTypeEnum.enumValues)[number]
+export type Zone = typeof zones.$inferSelect;
+export type NewZone = typeof zones.$inferInsert;
+export type ZoneType = (typeof zoneTypeEnum.enumValues)[number];
 
 export interface IZoneWithUserIdBodyRequest extends IZoneBodyRequest {
-  userId: string
+	userId: string;
 }
 
 export interface ICreateZoneWithFeatureDetailsResponse
-  extends Omit<Zone, 'coordinates'> {
-  featureDetails: NewZoneFeatureDetails
-  coordinates: Coordinates
+	extends Omit<Zone, 'coordinates'> {
+	featureDetails: NewZoneFeatureDetails;
+	coordinates: Coordinates;
 }
