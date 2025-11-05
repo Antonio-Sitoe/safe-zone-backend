@@ -81,4 +81,9 @@ export class GroupService {
 		await this.repository.deleteGroup(id);
 		return { message: 'Grupo removido com sucesso' };
 	}
+
+	async deleteContact(contactId: string) {
+		await this.repository.deleteContact(contactId);
+		return { message: 'Contato removido com sucesso' };
+	}
 }

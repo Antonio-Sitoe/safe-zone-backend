@@ -8,6 +8,9 @@ import type {
   AuthResult,
   LoginRequest,
   RegisterRequest,
+  UpdateUserRequest,
+  ChangePasswordRequest,
+  User,
 } from './auth.types'
 
 export class AuthService {
@@ -63,37 +66,6 @@ export class AuthService {
         .limit(1)
 
       if (existingUser.length > 0) {
-        const user = existingUser[0]
-
-        if (!user.emailVerified) {
-          logger.info('User exists but email not verified', {
-            email: request.email,
-            userId: user.id,
-          })
-          return {
-            data: {
-              user: {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                emailVerified: user.emailVerified,
-                image: user.image || undefined,
-                createdAt: user.createdAt.toISOString(),
-                updatedAt: user.updatedAt.toISOString(),
-              },
-              session: {
-                id: 'session-id',
-                token: 'token',
-                expiresAt: new Date().toISOString(),
-              },
-            },
-            error: {
-              message: 'Conta já existe mas email não foi verificado',
-              code: 'EMAIL_NOT_VERIFIED',
-            },
-          }
-        }
-
         return {
           error: {
             message: 'Email já está cadastrado',
@@ -158,6 +130,92 @@ export class AuthService {
         error instanceof Error ? error.message : 'Erro desconhecido'
       logger.error('SignOut error', { error: errorMessage })
       return { error: { message: errorMessage || 'Erro interno no servidor' } }
+    }
+  }
+
+  async updateUser(
+    sessionToken: string,
+    request: UpdateUserRequest
+  ): Promise<AuthResult<User>> {
+    try {
+      if (!sessionToken) {
+        return { error: { message: 'Token de sessão não fornecido' } }
+      }
+
+      if (!request.name && !request.image) {
+        return { error: { message: 'Pelo menos um campo deve ser atualizado' } }
+      }
+
+      await auth.api.updateUser({
+        body: request,
+        headers: { Authorization: `Bearer ${sessionToken}` },
+      })
+
+      // Get updated session to return updated user
+      const session = await auth.api.getSession({
+        headers: { Authorization: `Bearer ${sessionToken}` },
+      })
+
+      if (!session?.user) {
+        return { error: { message: 'Erro ao buscar usuário atualizado' } }
+      }
+
+      logger.auth('UpdateUser success', session.user.id)
+      return {
+        data: {
+          ...session.user,
+          image: session.user.image || undefined,
+          createdAt: session.user.createdAt.toISOString(),
+          updatedAt: session.user.updatedAt.toISOString(),
+        },
+      }
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erro desconhecido'
+      logger.error('UpdateUser error', { error: errorMessage })
+      return { error: { message: errorMessage || 'Erro interno no servidor' } }
+    }
+  }
+
+  async changePassword(
+    sessionToken: string,
+    request: ChangePasswordRequest
+  ): Promise<AuthResult<null>> {
+    try {
+      if (!sessionToken) {
+        return { error: { message: 'Token de sessão não fornecido' } }
+      }
+
+      this.validateChangePasswordRequest(request)
+
+      await auth.api.changePassword({
+        body: {
+          currentPassword: request.currentPassword,
+          newPassword: request.newPassword,
+          revokeOtherSessions: request.revokeOtherSessions ?? false,
+        },
+        headers: { Authorization: `Bearer ${sessionToken}` },
+      })
+
+      logger.auth('ChangePassword success')
+      return { data: null }
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erro desconhecido'
+      logger.error('ChangePassword error', { error: errorMessage })
+      return { error: { message: errorMessage || 'Erro interno no servidor' } }
+    }
+  }
+
+  private validateChangePasswordRequest(request: ChangePasswordRequest): void {
+    if (!request.currentPassword || !request.newPassword) {
+      throw new Error('Senha atual e nova senha são obrigatórias')
+    }
+    if (request.newPassword.length < 8) {
+      throw new Error('Nova senha deve ter pelo menos 8 caracteres')
+    }
+    if (request.newPassword.length > 128) {
+      throw new Error('Nova senha muito longa')
     }
   }
 

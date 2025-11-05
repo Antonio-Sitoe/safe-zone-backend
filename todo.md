@@ -1,40 +1,3 @@
-# Documento de Requisitos Funcionais – Aplicação Mapa Seguro
-
-## 1. Cadastro & Login
-
-### 1.1 Fluxo de Login
-
-- [x] Campos obrigatórios: Email/Nome de Usuário, Senha.
-- [x] Regras:
-  - [x] Se campos não preenchidos → 'Preencha todos os campos obrigatórios.'
-  - [x] Se dados inválidos → 'Credenciais inválidas.'
-  - [x] Se login bem-sucedido → 'Login efetuado com sucesso.'
-
-### 1.2 Fluxo de Criação de Conta
-
-- [x] Campos obrigatórios: Nome, Email, Telefone, Senha, Confirmar Senha.
-- [x] Validações:
-  - [x] Email válido.
-  - [x] Telefone apenas dígitos.
-  - [x] Senha forte (8+ caracteres, maiúscula, minúscula, número, caractere especial).
-  - [x] Confirmar Senha igual a Senha.
-- [x] Mensagens: Erro específico ou 'Conta criada com sucesso.'
-
-### 1.3 Confirmação de Conta
-
-- [x] Campo para inserir código enviado por email/telefone.
-- [x] Regras:
-  - [x] Código válido dentro do prazo.
-  - [x] Código inválido → 'Código inválido ou expirado.'
-  - [x] Código correto → 'Conta confirmada com sucesso.'
-  - [x] Expirado → opção 'Reenviar código'.
-
-### Cadastro & Login
-
-- [ ] Usuária só acessa após validação de código.
-- [ ] Emails/telefones inválidos bloqueiam cadastro.
-- [ ] Senhas não coincidentes impedem criação.
-
 ### 1. Recuperação de Senha
 
 - [ ] Fluxo para quando a usuária esquecer a senha.
@@ -100,29 +63,6 @@
 - [ ] O mapa deve carregar em até 10 segundos.
 
 ---
-
-## 6. Comunidade de Apoio & Disparo de Alertas
-
-### 6.1 Adicionar Contato
-
-- [x] Campos: Nome, Número, Tipo (Família, Amigo, Trabalho).
-- [x] Validações: número único.
-- [x] Opções: Guardar, Fechar.
-- [x] Mensagem: 'Contato adicionado com sucesso.'
-
-### 6.2 Criar Grupo
-
-- [x] Campos: Nome, Participantes (números).
-- [x] Permitir múltiplos participantes.
-- [x] Validação: participantes devem estar cadastrados ou novos números.
-- [x] Mensagem: 'Grupo criado com sucesso.'
-
-### Comunidade de Apoio
-
-- [x] Contatos duplicados não permitidos.
-- [x] Grupos com múltiplos participantes.
-- [x] Usuária pode editar ou excluir contatos e grupos.
-- [ ] RN03 – Contatos e grupos podem ser editados/excluídos.
 
 =====================================================================================
 

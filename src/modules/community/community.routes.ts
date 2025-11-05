@@ -101,4 +101,11 @@ export const communityRoutes = new Elysia({ prefix: '/groups' })
 			summary: 'Delete Group',
 			description: 'Remove um grupo e seus contatos',
 		},
+	})
+	.delete('/contact/:contactId', controller.deleteContact.bind(controller), {
+		detail: {
+			tags: ['Contact'],
+			summary: 'Delete Contact',
+			description: 'Remove um contato de um grupo',
+		},
 	});
