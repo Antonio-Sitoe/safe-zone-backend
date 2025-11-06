@@ -4,6 +4,7 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { bearer, openAPI } from 'better-auth/plugins'
 import { db } from '@/db/db'
 import { sendPasswordReset } from './email'
+import { env } from './env'
 
 export const auth = betterAuth({
   basePath: '/auth',
@@ -26,19 +27,14 @@ export const auth = betterAuth({
       verify: ({ hash, password }) => Bun.password.verify(password, hash),
     },
     sendResetPassword: async ({ user, url, token }) => {
-      // Criar URL de redirecionamento HTTP que abre o app
-      const baseUrl =
-        process.env.BETTER_AUTH_URL ||
-        `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`
+      const baseUrl = env.BETTER_AUTH_URL
       const redirectUrl = `${baseUrl}/auth/reset-password/redirect?token=${token}`
-
       console.log('Sending password reset email', {
         email: user.email,
         originalUrl: url,
         token,
         redirectUrl,
       })
-
       await sendPasswordReset(user.email, redirectUrl)
     },
   },
