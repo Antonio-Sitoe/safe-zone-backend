@@ -1,193 +1,193 @@
-import { z } from 'zod'
-import { ApiResponseSchema } from '@/utils/response'
+import { z } from 'zod';
+import { ApiResponseSchema } from '@/utils/response';
 
 export const LoginRequestSchema = z.object({
-  email: z.email('Email inválido'),
-  password: z.string().min(1, 'Senha é obrigatória'),
-})
+	email: z.email('Email inválido'),
+	password: z.string().min(1, 'Senha é obrigatória'),
+});
 
 export const RegisterRequestSchema = z.object({
-  name: z
-    .string()
-    .min(2, 'Nome deve ter pelo menos 2 caracteres')
-    .max(100, 'Nome muito longo'),
-  email: z.email('Email inválido'),
-  password: z
-    .string()
-    .min(8, 'Senha deve ter pelo menos 8 caracteres')
-    .max(128, 'Senha muito longa'),
-})
+	name: z
+		.string()
+		.min(2, 'Nome deve ter pelo menos 2 caracteres')
+		.max(100, 'Nome muito longo'),
+	email: z.email('Email inválido'),
+	password: z
+		.string()
+		.min(8, 'Senha deve ter pelo menos 8 caracteres')
+		.max(128, 'Senha muito longa'),
+});
 
 export const UserSchema = z.object({
-  id: z.string(),
-  email: z.email(),
-  name: z.string(),
-  emailVerified: z.boolean(),
-  image: z.string().optional(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-})
+	id: z.string(),
+	email: z.email(),
+	name: z.string(),
+	emailVerified: z.boolean(),
+	image: z.string().optional(),
+	createdAt: z.string(),
+	updatedAt: z.string(),
+});
 
 export const SessionSchema = z.object({
-  id: z.string(),
-  token: z.string(),
-  expiresAt: z.string(),
-})
+	id: z.string(),
+	token: z.string(),
+	expiresAt: z.string(),
+});
 
 export const AuthResponseSchema = z.object({
-  user: UserSchema,
-  session: SessionSchema,
-})
+	user: UserSchema,
+	session: SessionSchema,
+});
 
 export const OtpResponseDataSchema = z.object({
-  message: z.string(),
-})
+	message: z.string(),
+});
 
 export const SignInResponseSchema = {
-  200: ApiResponseSchema(AuthResponseSchema),
-  400: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-  401: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-  500: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-}
+	200: ApiResponseSchema(AuthResponseSchema),
+	400: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+	401: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+	500: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+};
 
 export const SignUpResponseSchema = {
-  201: ApiResponseSchema(AuthResponseSchema),
-  400: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-  500: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-}
+	201: ApiResponseSchema(AuthResponseSchema),
+	400: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+	500: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+};
 
 export const SignOutResponseSchema = {
-  200: ApiResponseSchema(z.null()),
-  400: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-  500: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-}
+	200: ApiResponseSchema(z.null()),
+	400: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+	500: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+};
 
 export const UpdateUserRequestSchema = z.object({
-  name: z
-    .string()
-    .min(2, 'Nome deve ter pelo menos 2 caracteres')
-    .max(100, 'Nome muito longo')
-    .optional(),
-  image: z.url({ error: 'URL da imagem inválida' }).optional(),
-})
+	name: z
+		.string()
+		.min(2, 'Nome deve ter pelo menos 2 caracteres')
+		.max(100, 'Nome muito longo')
+		.optional(),
+	image: z.url({ error: 'URL da imagem inválida' }).optional(),
+});
 
 export const ChangePasswordRequestSchema = z.object({
-  currentPassword: z.string().min(1, 'Senha atual é obrigatória'),
-  newPassword: z
-    .string()
-    .min(8, 'Senha deve ter pelo menos 8 caracteres')
-    .max(128, 'Senha muito longa'),
-  revokeOtherSessions: z.boolean().optional(),
-})
+	currentPassword: z.string().min(1, 'Senha atual é obrigatória'),
+	newPassword: z
+		.string()
+		.min(8, 'Senha deve ter pelo menos 8 caracteres')
+		.max(128, 'Senha muito longa'),
+	revokeOtherSessions: z.boolean().optional(),
+});
 
 export const UpdateUserResponseSchema = {
-  200: ApiResponseSchema(UserSchema),
-  400: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-  500: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-}
+	200: ApiResponseSchema(UserSchema),
+	400: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+	500: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+};
 
 export const ChangePasswordResponseSchema = {
-  200: ApiResponseSchema(z.null()),
-  400: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-  500: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-}
+	200: ApiResponseSchema(z.null()),
+	400: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+	500: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+};
 
 export const DeactivateAccountResponseSchema = {
-  200: ApiResponseSchema(z.null()),
-  400: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-  401: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-  500: ApiResponseSchema(
-    z.object({
-      success: z.boolean(),
-      message: z.string(),
-      error: z.string(),
-    })
-  ),
-}
+	200: ApiResponseSchema(z.null()),
+	400: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+	401: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+	500: ApiResponseSchema(
+		z.object({
+			success: z.boolean(),
+			message: z.string(),
+			error: z.string(),
+		}),
+	),
+};
 
-export type LoginRequest = z.infer<typeof LoginRequestSchema>
-export type RegisterRequest = z.infer<typeof RegisterRequestSchema>
-export type UpdateUserRequest = z.infer<typeof UpdateUserRequestSchema>
-export type ChangePasswordRequest = z.infer<typeof ChangePasswordRequestSchema>
-export type User = z.infer<typeof UserSchema>
-export type Session = z.infer<typeof SessionSchema>
-export type AuthResponse = z.infer<typeof AuthResponseSchema>
-export type OtpResponse = z.infer<typeof OtpResponseDataSchema>
+export type LoginRequest = z.infer<typeof LoginRequestSchema>;
+export type RegisterRequest = z.infer<typeof RegisterRequestSchema>;
+export type UpdateUserRequest = z.infer<typeof UpdateUserRequestSchema>;
+export type ChangePasswordRequest = z.infer<typeof ChangePasswordRequestSchema>;
+export type User = z.infer<typeof UserSchema>;
+export type Session = z.infer<typeof SessionSchema>;
+export type AuthResponse = z.infer<typeof AuthResponseSchema>;
+export type OtpResponse = z.infer<typeof OtpResponseDataSchema>;

@@ -3,11 +3,14 @@
 - [ ] Fluxo para quando a usuária esquecer a senha.
 - [ ] Envio de código por email/telefone para redefinição.
 
-### 2. Gestão de Perfil da Usuária
+### Zonas
 
-- [ ] Editar dados pessoais (nome, telefone, email).
-- [ ] Alterar senha.
-- [x] Excluir conta.
+- [x] Campos obrigatórios preenchidos.
+- [x] Localização, data e hora válidos.
+- [x] Zona exibida no mapa imediatamente.
+- [x] RN05 – Áreas críticas são geradas com ≥10 relatos.
+- [ ] O mapa deve carregar em até 10 segundos.
+- [x] 10+ usuárias → Área marcada como Crítica.
 
 ## 3. Criar Zona Segura
 
@@ -19,8 +22,6 @@
 - [ ] Upload de fotos/vídeos (opcional).
 - [x] Ações: Guardar (salva), Fechar (cancela).
 
----
-
 ## 4. Criar Zona de Perigo
 
 - [x] Campos obrigatórios: Localização (GPS/manual), Data, Hora, Descrição.
@@ -30,19 +31,6 @@
   - [x] Casas abandonadas
 - [] Upload de fotos/vídeos (opcional).
 - [x] Ações: Guardar (salva), Fechar (cancela).
-
----
-
-### Zonas
-
-- [x] Campos obrigatórios preenchidos.
-- [x] Localização, data e hora válidos.
-- [x] Zona exibida no mapa imediatamente.
-- [x] RN05 – Áreas críticas são geradas com ≥10 relatos.
-- [ ] O mapa deve carregar em até 10 segundos.
-- [x] 10+ usuárias → Área marcada como Crítica.
-
----
 
 ### 3. Gestão das Zonas
 

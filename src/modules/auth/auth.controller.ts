@@ -1,154 +1,154 @@
-import type { Context } from 'elysia'
-import { HTTP_STATUS } from '@/utils/constants'
-import { logger } from '@/utils/logger'
-import { errorResponse, successResponse } from '@/utils/response'
-import { extractTokenFromHeaders } from '@/utils/auth-utils'
-import { authService } from './auth.service'
+import type { Context } from 'elysia';
+import { HTTP_STATUS } from '@/utils/constants';
+import { logger } from '@/utils/logger';
+import { errorResponse, successResponse } from '@/utils/response';
+import { extractTokenFromHeaders } from '@/utils/auth-utils';
+import { authService } from './auth.service';
 import type {
-  LoginRequest,
-  RegisterRequest,
-  UpdateUserRequest,
-  ChangePasswordRequest,
-} from './auth.types'
+	LoginRequest,
+	RegisterRequest,
+	UpdateUserRequest,
+	ChangePasswordRequest,
+} from './auth.types';
 
 export class AuthController {
-  constructor(private readonly service = authService) {}
+	constructor(private readonly service = authService) {}
 
-  async signInEmail(ctx: Pick<Context, 'body' | 'set'>) {
-    try {
-      const body = ctx.body as LoginRequest
-      const result = await this.service.signInEmail(body)
+	async signInEmail(ctx: Pick<Context, 'body' | 'set'>) {
+		try {
+			const body = ctx.body as LoginRequest;
+			const result = await this.service.signInEmail(body);
 
-      if (result.error) {
-        const status =
-          result.error.code === 'ACCOUNT_DEACTIVATED'
-            ? HTTP_STATUS.UNAUTHORIZED
-            : HTTP_STATUS.BAD_REQUEST
-        ctx.set.status = status
-        return errorResponse('Erro no login', result.error.message)
-      }
+			if (result.error) {
+				const status =
+					result.error.code === 'ACCOUNT_DEACTIVATED'
+						? HTTP_STATUS.UNAUTHORIZED
+						: HTTP_STATUS.BAD_REQUEST;
+				ctx.set.status = status;
+				return errorResponse('Erro no login', result.error.message);
+			}
 
-      ctx.set.status = HTTP_STATUS.OK
-      return successResponse(result.data, 'Login realizado com sucesso')
-    } catch {
-      ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR
-      return errorResponse('Erro interno no servidor')
-    }
-  }
+			ctx.set.status = HTTP_STATUS.OK;
+			return successResponse(result.data, 'Login realizado com sucesso');
+		} catch {
+			ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR;
+			return errorResponse('Erro interno no servidor');
+		}
+	}
 
-  async signUpEmail(ctx: Pick<Context, 'body' | 'set'>) {
-    try {
-      const body = ctx.body as RegisterRequest
-      const result = await this.service.signUpEmail(body)
+	async signUpEmail(ctx: Pick<Context, 'body' | 'set'>) {
+		try {
+			const body = ctx.body as RegisterRequest;
+			const result = await this.service.signUpEmail(body);
 
-      if (result.error) {
-        ctx.set.status = HTTP_STATUS.BAD_REQUEST
-        return errorResponse('Erro no registro', result.error.message)
-      }
+			if (result.error) {
+				ctx.set.status = HTTP_STATUS.BAD_REQUEST;
+				return errorResponse('Erro no registro', result.error.message);
+			}
 
-      ctx.set.status = HTTP_STATUS.CREATED
-      return successResponse(result.data, 'Usuário criado com sucesso')
-    } catch {
-      ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR
-      return errorResponse('Erro interno no servidor')
-    }
-  }
+			ctx.set.status = HTTP_STATUS.CREATED;
+			return successResponse(result.data, 'Usuário criado com sucesso');
+		} catch {
+			ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR;
+			return errorResponse('Erro interno no servidor');
+		}
+	}
 
-  async signOut(ctx: Pick<Context, 'request' | 'set'>) {
-    try {
-      const sessionToken = extractTokenFromHeaders(ctx.request.headers)
+	async signOut(ctx: Pick<Context, 'request' | 'set'>) {
+		try {
+			const sessionToken = extractTokenFromHeaders(ctx.request.headers);
 
-      if (!sessionToken) {
-        ctx.set.status = HTTP_STATUS.BAD_REQUEST
-        return errorResponse('Token de sessão não fornecido')
-      }
+			if (!sessionToken) {
+				ctx.set.status = HTTP_STATUS.BAD_REQUEST;
+				return errorResponse('Token de sessão não fornecido');
+			}
 
-      const result = await this.service.signOut(sessionToken)
+			const result = await this.service.signOut(sessionToken);
 
-      if (result.error) {
-        ctx.set.status = HTTP_STATUS.BAD_REQUEST
-        return errorResponse('Erro no logout', result.error.message)
-      }
+			if (result.error) {
+				ctx.set.status = HTTP_STATUS.BAD_REQUEST;
+				return errorResponse('Erro no logout', result.error.message);
+			}
 
-      ctx.set.status = HTTP_STATUS.OK
-      return successResponse(null, 'Logout realizado com sucesso')
-    } catch {
-      ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR
-      return errorResponse('Erro interno no servidor')
-    }
-  }
+			ctx.set.status = HTTP_STATUS.OK;
+			return successResponse(null, 'Logout realizado com sucesso');
+		} catch {
+			ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR;
+			return errorResponse('Erro interno no servidor');
+		}
+	}
 
-  async updateUser(ctx: Pick<Context, 'body' | 'request' | 'set'>) {
-    try {
-      const sessionToken = extractTokenFromHeaders(ctx.request.headers)
-      if (!sessionToken) {
-        ctx.set.status = HTTP_STATUS.UNAUTHORIZED
-        return errorResponse('Token de sessão não fornecido')
-      }
+	async updateUser(ctx: Pick<Context, 'body' | 'request' | 'set'>) {
+		try {
+			const sessionToken = extractTokenFromHeaders(ctx.request.headers);
+			if (!sessionToken) {
+				ctx.set.status = HTTP_STATUS.UNAUTHORIZED;
+				return errorResponse('Token de sessão não fornecido');
+			}
 
-      const body = ctx.body as UpdateUserRequest
-      const result = await this.service.updateUser(sessionToken, body)
-      if (result.error) {
-        ctx.set.status = HTTP_STATUS.BAD_REQUEST
-        return errorResponse('Erro ao atualizar usuário', result.error.message)
-      }
+			const body = ctx.body as UpdateUserRequest;
+			const result = await this.service.updateUser(sessionToken, body);
+			if (result.error) {
+				ctx.set.status = HTTP_STATUS.BAD_REQUEST;
+				return errorResponse('Erro ao atualizar usuário', result.error.message);
+			}
 
-      ctx.set.status = HTTP_STATUS.OK
-      return successResponse(result.data, 'Usuário atualizado com sucesso')
-    } catch {
-      ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR
-      return errorResponse('Erro interno no servidor')
-    }
-  }
+			ctx.set.status = HTTP_STATUS.OK;
+			return successResponse(result.data, 'Usuário atualizado com sucesso');
+		} catch {
+			ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR;
+			return errorResponse('Erro interno no servidor');
+		}
+	}
 
-  async changePassword(ctx: Pick<Context, 'body' | 'request' | 'set'>) {
-    try {
-      const sessionToken = extractTokenFromHeaders(ctx.request.headers)
+	async changePassword(ctx: Pick<Context, 'body' | 'request' | 'set'>) {
+		try {
+			const sessionToken = extractTokenFromHeaders(ctx.request.headers);
 
-      if (!sessionToken) {
-        ctx.set.status = HTTP_STATUS.UNAUTHORIZED
-        return errorResponse('Token de sessão não fornecido')
-      }
+			if (!sessionToken) {
+				ctx.set.status = HTTP_STATUS.UNAUTHORIZED;
+				return errorResponse('Token de sessão não fornecido');
+			}
 
-      const body = ctx.body as ChangePasswordRequest
-      const result = await this.service.changePassword(sessionToken, body)
+			const body = ctx.body as ChangePasswordRequest;
+			const result = await this.service.changePassword(sessionToken, body);
 
-      if (result.error) {
-        ctx.set.status = HTTP_STATUS.BAD_REQUEST
-        return errorResponse('Erro ao alterar senha', result.error.message)
-      }
+			if (result.error) {
+				ctx.set.status = HTTP_STATUS.BAD_REQUEST;
+				return errorResponse('Erro ao alterar senha', result.error.message);
+			}
 
-      ctx.set.status = HTTP_STATUS.OK
-      return successResponse(null, 'Senha alterada com sucesso')
-    } catch {
-      ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR
-      return errorResponse('Erro interno no servidor')
-    }
-  }
+			ctx.set.status = HTTP_STATUS.OK;
+			return successResponse(null, 'Senha alterada com sucesso');
+		} catch {
+			ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR;
+			return errorResponse('Erro interno no servidor');
+		}
+	}
 
-  async deactivateAccount(ctx: Pick<Context, 'request' | 'set'>) {
-    try {
-      const sessionToken = extractTokenFromHeaders(ctx.request.headers)
+	async deactivateAccount(ctx: Pick<Context, 'request' | 'set'>) {
+		try {
+			const sessionToken = extractTokenFromHeaders(ctx.request.headers);
 
-      if (!sessionToken) {
-        ctx.set.status = HTTP_STATUS.UNAUTHORIZED
-        return errorResponse('Token de sessão não fornecido')
-      }
+			if (!sessionToken) {
+				ctx.set.status = HTTP_STATUS.UNAUTHORIZED;
+				return errorResponse('Token de sessão não fornecido');
+			}
 
-      const result = await this.service.deactivateAccount(sessionToken)
+			const result = await this.service.deactivateAccount(sessionToken);
 
-      if (result.error) {
-        ctx.set.status = HTTP_STATUS.BAD_REQUEST
-        return errorResponse('Erro ao desativar conta', result.error.message)
-      }
+			if (result.error) {
+				ctx.set.status = HTTP_STATUS.BAD_REQUEST;
+				return errorResponse('Erro ao desativar conta', result.error.message);
+			}
 
-      ctx.set.status = HTTP_STATUS.OK
-      return successResponse(null, 'Conta desativada com sucesso')
-    } catch {
-      ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR
-      return errorResponse('Erro interno no servidor')
-    }
-  }
+			ctx.set.status = HTTP_STATUS.OK;
+			return successResponse(null, 'Conta desativada com sucesso');
+		} catch {
+			ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR;
+			return errorResponse('Erro interno no servidor');
+		}
+	}
 }
 
-export const authController = new AuthController()
+export const authController = new AuthController();

@@ -4,7 +4,6 @@ import { emailConfig, resend } from './config';
 import { PasswordResetEmailTemplate } from './password-reset-template';
 
 export class EmailService {
-
 	async sendPasswordReset({
 		email,
 		resetUrl,
