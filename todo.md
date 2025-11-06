@@ -7,7 +7,7 @@
 
 - [ ] Editar dados pessoais (nome, telefone, email).
 - [ ] Alterar senha.
-- [ ] Excluir conta.
+- [x] Excluir conta.
 
 ## 3. Criar Zona Segura
 

@@ -1,6 +1,11 @@
 import { z } from 'zod'
 import { ApiResponseSchema } from '@/utils/response'
 
+export const LoginRequestSchema = z.object({
+  email: z.email('Email inválido'),
+  password: z.string().min(1, 'Senha é obrigatória'),
+})
+
 export const RegisterRequestSchema = z.object({
   name: z
     .string()
@@ -37,6 +42,31 @@ export const AuthResponseSchema = z.object({
 export const OtpResponseDataSchema = z.object({
   message: z.string(),
 })
+
+export const SignInResponseSchema = {
+  200: ApiResponseSchema(AuthResponseSchema),
+  400: ApiResponseSchema(
+    z.object({
+      success: z.boolean(),
+      message: z.string(),
+      error: z.string(),
+    })
+  ),
+  401: ApiResponseSchema(
+    z.object({
+      success: z.boolean(),
+      message: z.string(),
+      error: z.string(),
+    })
+  ),
+  500: ApiResponseSchema(
+    z.object({
+      success: z.boolean(),
+      message: z.string(),
+      error: z.string(),
+    })
+  ),
+}
 
 export const SignUpResponseSchema = {
   201: ApiResponseSchema(AuthResponseSchema),
@@ -80,7 +110,7 @@ export const UpdateUserRequestSchema = z.object({
     .min(2, 'Nome deve ter pelo menos 2 caracteres')
     .max(100, 'Nome muito longo')
     .optional(),
-  image: z.string().url('URL da imagem inválida').optional(),
+  image: z.url({ error: 'URL da imagem inválida' }).optional(),
 })
 
 export const ChangePasswordRequestSchema = z.object({
@@ -128,6 +158,32 @@ export const ChangePasswordResponseSchema = {
   ),
 }
 
+export const DeactivateAccountResponseSchema = {
+  200: ApiResponseSchema(z.null()),
+  400: ApiResponseSchema(
+    z.object({
+      success: z.boolean(),
+      message: z.string(),
+      error: z.string(),
+    })
+  ),
+  401: ApiResponseSchema(
+    z.object({
+      success: z.boolean(),
+      message: z.string(),
+      error: z.string(),
+    })
+  ),
+  500: ApiResponseSchema(
+    z.object({
+      success: z.boolean(),
+      message: z.string(),
+      error: z.string(),
+    })
+  ),
+}
+
+export type LoginRequest = z.infer<typeof LoginRequestSchema>
 export type RegisterRequest = z.infer<typeof RegisterRequestSchema>
 export type UpdateUserRequest = z.infer<typeof UpdateUserRequestSchema>
 export type ChangePasswordRequest = z.infer<typeof ChangePasswordRequestSchema>

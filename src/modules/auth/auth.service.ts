@@ -12,11 +12,28 @@ import type {
   ChangePasswordRequest,
   User,
 } from './auth.types'
+import { sessions } from '@/db/schemas'
 
 export class AuthService {
   async signInEmail(request: LoginRequest): Promise<AuthResult<AuthResponse>> {
     try {
       this.validateLoginRequest(request)
+
+      const existingUser = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, request.email))
+        .limit(1)
+
+      if (existingUser.length > 0 && !existingUser[0].isActive) {
+        return {
+          error: {
+            message:
+              'Conta desativada. Entre em contato com o suporte para reativar.',
+            code: 'ACCOUNT_DEACTIVATED',
+          },
+        }
+      }
 
       const result = await auth.api.signInEmail({
         body: { email: request.email, password: request.password },
@@ -24,6 +41,22 @@ export class AuthService {
 
       if (!result) {
         return { error: { message: 'Erro na autenticação' } }
+      }
+
+      const userCheck = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, result.user?.id))
+        .limit(1)
+
+      if (userCheck.length > 0 && !userCheck[0].isActive) {
+        return {
+          error: {
+            message:
+              'Conta desativada. Entre em contato com o suporte para reativar.',
+            code: 'ACCOUNT_DEACTIVATED',
+          },
+        }
       }
 
       logger.auth('SignIn success', result.user?.id)
@@ -141,17 +174,14 @@ export class AuthService {
       if (!sessionToken) {
         return { error: { message: 'Token de sessão não fornecido' } }
       }
-
       if (!request.name && !request.image) {
         return { error: { message: 'Pelo menos um campo deve ser atualizado' } }
       }
-
       await auth.api.updateUser({
         body: request,
         headers: { Authorization: `Bearer ${sessionToken}` },
       })
 
-      // Get updated session to return updated user
       const session = await auth.api.getSession({
         headers: { Authorization: `Bearer ${sessionToken}` },
       })
@@ -160,7 +190,6 @@ export class AuthService {
         return { error: { message: 'Erro ao buscar usuário atualizado' } }
       }
 
-      logger.auth('UpdateUser success', session.user.id)
       return {
         data: {
           ...session.user,
@@ -203,6 +232,52 @@ export class AuthService {
       const errorMessage =
         error instanceof Error ? error.message : 'Erro desconhecido'
       logger.error('ChangePassword error', { error: errorMessage })
+      return { error: { message: errorMessage || 'Erro interno no servidor' } }
+    }
+  }
+
+  async deactivateAccount(sessionToken: string): Promise<AuthResult<null>> {
+    try {
+      if (!sessionToken) {
+        return { error: { message: 'Token de sessão não fornecido' } }
+      }
+      const session = await auth.api.getSession({
+        headers: { Authorization: `Bearer ${sessionToken}` },
+      })
+
+      if (!session?.user) {
+        return { error: { message: 'Sessão inválida' } }
+      }
+
+      const userId = session.user.id
+
+      const user = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, userId))
+        .limit(1)
+
+      if (user.length === 0) {
+        return { error: { message: 'Usuário não encontrado' } }
+      }
+
+      if (!user[0].isActive) {
+        return { error: { message: 'Conta já está desativada' } }
+      }
+
+      await db
+        .update(users)
+        .set({ isActive: false, updatedAt: new Date() })
+        .where(eq(users.id, userId))
+
+      await db.delete(sessions).where(eq(sessions.userId, userId))
+
+      logger.auth('DeactivateAccount success', userId)
+      return { data: null }
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Erro desconhecido'
+      logger.error('DeactivateAccount error', { error: errorMessage })
       return { error: { message: errorMessage || 'Erro interno no servidor' } }
     }
   }

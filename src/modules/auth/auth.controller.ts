@@ -2,8 +2,10 @@ import type { Context } from 'elysia'
 import { HTTP_STATUS } from '@/utils/constants'
 import { logger } from '@/utils/logger'
 import { errorResponse, successResponse } from '@/utils/response'
+import { extractTokenFromHeaders } from '@/utils/auth-utils'
 import { authService } from './auth.service'
 import type {
+  LoginRequest,
   RegisterRequest,
   UpdateUserRequest,
   ChangePasswordRequest,
@@ -12,11 +14,32 @@ import type {
 export class AuthController {
   constructor(private readonly service = authService) {}
 
+  async signInEmail(ctx: Pick<Context, 'body' | 'set'>) {
+    try {
+      const body = ctx.body as LoginRequest
+      const result = await this.service.signInEmail(body)
+
+      if (result.error) {
+        const status =
+          result.error.code === 'ACCOUNT_DEACTIVATED'
+            ? HTTP_STATUS.UNAUTHORIZED
+            : HTTP_STATUS.BAD_REQUEST
+        ctx.set.status = status
+        return errorResponse('Erro no login', result.error.message)
+      }
+
+      ctx.set.status = HTTP_STATUS.OK
+      return successResponse(result.data, 'Login realizado com sucesso')
+    } catch {
+      ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR
+      return errorResponse('Erro interno no servidor')
+    }
+  }
+
   async signUpEmail(ctx: Pick<Context, 'body' | 'set'>) {
     try {
       const body = ctx.body as RegisterRequest
       const result = await this.service.signUpEmail(body)
-      logger.info('result', { result })
 
       if (result.error) {
         ctx.set.status = HTTP_STATUS.BAD_REQUEST
@@ -31,9 +54,9 @@ export class AuthController {
     }
   }
 
-  async signOut(ctx: Pick<Context, 'headers' | 'set'>) {
+  async signOut(ctx: Pick<Context, 'request' | 'set'>) {
     try {
-      const sessionToken = ctx.headers.authorization?.replace('Bearer ', '')
+      const sessionToken = extractTokenFromHeaders(ctx.request.headers)
 
       if (!sessionToken) {
         ctx.set.status = HTTP_STATUS.BAD_REQUEST
@@ -55,10 +78,9 @@ export class AuthController {
     }
   }
 
-  async updateUser(ctx: Pick<Context, 'body' | 'headers' | 'set'>) {
+  async updateUser(ctx: Pick<Context, 'body' | 'request' | 'set'>) {
     try {
-      const sessionToken = ctx.headers.authorization?.replace('Bearer ', '')
-
+      const sessionToken = extractTokenFromHeaders(ctx.request.headers)
       if (!sessionToken) {
         ctx.set.status = HTTP_STATUS.UNAUTHORIZED
         return errorResponse('Token de sessão não fornecido')
@@ -66,7 +88,6 @@ export class AuthController {
 
       const body = ctx.body as UpdateUserRequest
       const result = await this.service.updateUser(sessionToken, body)
-
       if (result.error) {
         ctx.set.status = HTTP_STATUS.BAD_REQUEST
         return errorResponse('Erro ao atualizar usuário', result.error.message)
@@ -80,9 +101,9 @@ export class AuthController {
     }
   }
 
-  async changePassword(ctx: Pick<Context, 'body' | 'headers' | 'set'>) {
+  async changePassword(ctx: Pick<Context, 'body' | 'request' | 'set'>) {
     try {
-      const sessionToken = ctx.headers.authorization?.replace('Bearer ', '')
+      const sessionToken = extractTokenFromHeaders(ctx.request.headers)
 
       if (!sessionToken) {
         ctx.set.status = HTTP_STATUS.UNAUTHORIZED
@@ -99,6 +120,30 @@ export class AuthController {
 
       ctx.set.status = HTTP_STATUS.OK
       return successResponse(null, 'Senha alterada com sucesso')
+    } catch {
+      ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR
+      return errorResponse('Erro interno no servidor')
+    }
+  }
+
+  async deactivateAccount(ctx: Pick<Context, 'request' | 'set'>) {
+    try {
+      const sessionToken = extractTokenFromHeaders(ctx.request.headers)
+
+      if (!sessionToken) {
+        ctx.set.status = HTTP_STATUS.UNAUTHORIZED
+        return errorResponse('Token de sessão não fornecido')
+      }
+
+      const result = await this.service.deactivateAccount(sessionToken)
+
+      if (result.error) {
+        ctx.set.status = HTTP_STATUS.BAD_REQUEST
+        return errorResponse('Erro ao desativar conta', result.error.message)
+      }
+
+      ctx.set.status = HTTP_STATUS.OK
+      return successResponse(null, 'Conta desativada com sucesso')
     } catch {
       ctx.set.status = HTTP_STATUS.INTERNAL_SERVER_ERROR
       return errorResponse('Erro interno no servidor')
