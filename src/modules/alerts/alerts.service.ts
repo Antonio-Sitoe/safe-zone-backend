@@ -52,9 +52,8 @@ export class AlertsService {
       for (const contact of validContacts) {
         const sendSms = await smsService(
           contact.phone,
-          contact.name +
-            ', Estou em perigo! Me ajuda por favor.\nASS: ' +
-            username
+          `${contact.name}, estou em perigo. Preciso da sua ajuda urgente! 
+— ${username}`
         )
 
         if (!sendSms.success) {

@@ -23,6 +23,7 @@ export const smsService = async (
     )
     return { success: true }
   } catch (error: any) {
+    console.log('error', error)
     return { success: false, error: error?.response?.data.message }
   }
 }

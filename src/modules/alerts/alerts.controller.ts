@@ -6,7 +6,6 @@ import { HTTP_STATUS } from '@/utils/constants'
 export class AlertsController {
   async sendAlert(ctx: AuthenticatedContext) {
     try {
-      console.log(ctx.user)
       const body = ctx.body as ISendAlertBody
       const userId = ctx?.user?.id
       const username = ctx?.user?.name
@@ -28,7 +27,7 @@ export class AlertsController {
       }
 
       ctx.set.status = HTTP_STATUS.OK
-      return successResponse('Alertas enviado com sucesso')
+      return 'Alertas enviado com sucesso'
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : 'Erro desconhecido'
