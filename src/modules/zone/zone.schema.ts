@@ -85,8 +85,28 @@ export const getAllResponse = {
     success: z.boolean(),
     message: z.string(),
     data: z.array(
-      ZoneBodySchema.extend({
+      z.object({
         id: z.string(),
+        slug: z.string(),
+        date: z.string(),
+        hour: z.string(),
+        description: z.string(),
+        latitude: z.number(),
+        longitude: z.number(),
+        geom: z.any(),
+        type: z.enum(['SAFE', 'DANGER']),
+        userId: z.string(),
+        createdAt: z.coerce.date(),
+        updatedAt: z.coerce.date(),
+        featureDetails: zoneFeatureDetailsSchema
+          .extend({
+            id: z.string(),
+            zoneId: z.string(),
+            zoneType: z.enum(['SAFE', 'DANGER']),
+            createdAt: z.coerce.date(),
+            updatedAt: z.coerce.date(),
+          })
+          .nullable(),
       })
     ),
   }),
