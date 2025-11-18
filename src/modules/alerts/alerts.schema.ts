@@ -5,8 +5,8 @@ export const SendAlertRequestSchema = z.object({
     .array(z.uuid('Cada ID deve ser um UUID válido'))
     .min(1, 'É necessário fornecer pelo menos um contato')
     .max(100, 'Máximo de 100 contatos por alerta'),
-  lat: z.string(),
-  long: z.string(),
+  lat: z.number(),
+  long: z.number(),
 })
 
 export const AlertResponseSchema = z.object({

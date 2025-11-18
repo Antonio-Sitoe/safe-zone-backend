@@ -53,11 +53,9 @@ export class AlertsService {
       for (const contact of validContacts) {
         const sendSms = await smsService(
           contact.phone,
-          `${contact.name}, estou em perigo e preciso da sua ajuda imediatamente!
-						Esta é a minha localização atual:
-						https://www.google.com/maps?q=${request.lat},${request.long}
-
-						— ${username}`
+          `Aqui ${contact.name}, estou em perigo e preciso da sua ajuda imediatamente!\nEsta é a minha localização atual:
+						https://www.google.com/maps?q=${request.lat},${request.long}\n#safe-zone
+						`
         )
 
         if (!sendSms.success) {
