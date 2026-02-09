@@ -9,7 +9,7 @@ export class AlertsService {
   async sendAlert(
     userId: string,
     username: string,
-    request: ISendAlertBody
+    request: ISendAlertBody,
   ): Promise<{
     success: boolean
     failed?: any
@@ -20,7 +20,7 @@ export class AlertsService {
         await this.groupRepository.findContactsByUserId(userId)
 
       const validContactsMap = new Map(
-        userContacts.map((contact) => [contact.id, contact])
+        userContacts.map((contact) => [contact.id, contact]),
       )
       const sendSmsInfo = []
 
@@ -53,9 +53,9 @@ export class AlertsService {
       for (const contact of validContacts) {
         const sendSms = await smsService(
           contact.phone,
-          `Aqui ${contact.name}, estou em perigo e preciso da sua ajuda imediatamente!\nEsta é a minha localização atual:
+          `Aqui ${username}, estou em perigo e preciso da sua ajuda imediatamente!\nEsta é a minha localização atual:
 						https://www.google.com/maps?q=${request.lat},${request.long}\n#safe-zone
-						`
+						`,
         )
 
         if (!sendSms.success) {
