@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgis/postgis:17-master
+    platform: linux/amd64
     environment:
       POSTGRES_DB: safe_zone_db
       POSTGRES_USER: safezone_user
